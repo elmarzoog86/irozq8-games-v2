@@ -1,5 +1,5 @@
 {
   "name": "iRozQ8 Interactive Games",
-  "description": "A modern, professional gaming platform built with Next.js, TypeScript, and Tailwind CSS. Features a lobby system, Twitch OAuth authentication, real-time chat integration, and multiple interactive games.",
+  "description": "A modern, professional gaming platform built with Express, Vite, TypeScript, and Tailwind CSS. Features a lobby system, Twitch integration, real-time chat, and multiple interactive games.",
   "requestFramePermissions": []
 }

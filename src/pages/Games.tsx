@@ -7,7 +7,7 @@ import { Gamepad2, ArrowLeft, Play, Lock } from 'lucide-react';
 const games = [
   {
     id: 'questions',
-    title: 'سؤال و جواب',
+    title: 'سين جيم',
     description: 'لعبة أسئلة تفاعلية متنوعة للاعبين الأسرع في الإجابة',
     icon: '🎯',
     path: '/games/questions',

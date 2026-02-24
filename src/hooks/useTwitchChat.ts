@@ -34,6 +34,19 @@ export function useTwitchChat({ channelName, accessToken, sessionId }: UseTwitch
           }),
         });
 
+        if (!startRes.ok) {
+          const text = await startRes.text();
+          console.error('Server error response:', text);
+          throw new Error(`Server returned ${startRes.status}: ${text.slice(0, 100)}`);
+        }
+
+        const contentType = startRes.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          const text = await startRes.text();
+          console.error('Non-JSON response:', text);
+          throw new Error('Server returned non-JSON response. Check server logs.');
+        }
+
         const startData = await startRes.json();
 
         if (!startData.success) {

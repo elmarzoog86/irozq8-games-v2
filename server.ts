@@ -1,5 +1,4 @@
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import tmi from "tmi.js";
 
 const app = express();
@@ -33,12 +32,16 @@ function broadcastToListeners(channelName: string, data: string) {
 
 // API Routes
 app.post("/api/twitch/chat", async (req, res) => {
+  console.log(`📡 [API] POST /api/twitch/chat - Body:`, req.body);
   try {
     const { action, channelName, accessToken, sessionId } = req.body;
 
-    console.log(
-      `🎙️ [CHAT PROXY] Received request: action=${action}, channel=${channelName}, session=${sessionId}`
-    );
+    if (!action || !channelName) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing action or channelName",
+      });
+    }
 
     if (action === "start") {
       if (activeChatClients.has(channelName)) {
@@ -71,7 +74,7 @@ app.post("/api/twitch/chat", async (req, res) => {
                 password: `oauth:${accessToken}`,
               }
             : undefined,
-          channels: [channelName],
+          channels: [channelName.startsWith('#') ? channelName : `#${channelName}`],
         });
 
         const chatClient: ChatClient = {
@@ -231,8 +234,17 @@ app.get("/api/twitch/chat", (req, res) => {
   });
 });
 
+// 404 handler for API routes
+app.all("/api/*", (req, res) => {
+  res.status(404).json({
+    success: false,
+    error: `API route not found: ${req.method} ${req.url}`,
+  });
+});
+
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -240,6 +252,10 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     app.use(express.static("dist"));
+    // SPA fallback for production: serve index.html for any unknown routes
+    app.get("*", (req, res) => {
+      res.sendFile("dist/index.html", { root: "." });
+    });
   }
 
   app.listen(PORT, "0.0.0.0", () => {
@@ -247,4 +263,8 @@ async function startServer() {
   });
 }
 
-startServer();
+export default app;
+
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+  startServer();
+}

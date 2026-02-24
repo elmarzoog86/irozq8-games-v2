@@ -43,7 +43,7 @@ export function FruitWarGame() {
     if (players.length > 0) {
       setGameState(gameMode);
     } else {
-      alert('Please wait for players to join!');
+      alert('يرجى الانتظار حتى ينضم اللاعبون!');
     }
   };
 
@@ -52,8 +52,8 @@ export function FruitWarGame() {
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black opacity-80" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/5 rounded-full blur-2xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-2xl" />
       </div>
 
       {/* Header */}
@@ -187,7 +187,7 @@ export function FruitWarGame() {
                     <div className="w-full bg-zinc-900 rounded-full h-2 mt-2 overflow-hidden">
                       <div className="bg-yellow-500 h-full w-1/3" />
                     </div>
-                    <span className="text-xs text-zinc-500 font-mono">12 votes</span>
+                    <span className="text-xs text-zinc-500 font-mono">12 صوت</span>
                   </div>
                 ))}
               </div>

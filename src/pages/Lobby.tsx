@@ -53,7 +53,7 @@ export function Lobby() {
               className="flex items-center gap-2 bg-[#9146FF] hover:bg-[#772CE8] text-white px-6 py-2.5 rounded-full font-medium transition-colors shadow-lg shadow-purple-500/20"
             >
               <LogIn className="w-5 h-5" />
-              Sign in with Twitch
+              تسجيل الدخول عبر تويتش
             </button>
           )}
         </div>
@@ -94,7 +94,7 @@ export function Lobby() {
                 className="w-full flex items-center justify-center gap-2 bg-[#9146FF] hover:bg-[#772CE8] text-white px-6 py-3 rounded-xl font-medium transition-colors"
               >
                 <LogIn className="w-5 h-5" />
-                Sign in with Twitch
+                تسجيل الدخول عبر تويتش
               </button>
             </div>
           )}

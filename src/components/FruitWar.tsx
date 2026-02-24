@@ -33,37 +33,37 @@ interface Player {
 }
 
 const ALL_FRUITS: Fruit[] = [
-  { name: 'Apple', emoji: '🍎' },
-  { name: 'Banana', emoji: '🍌' },
-  { name: 'Orange', emoji: '🍊' },
-  { name: 'Grape', emoji: '🍇' },
-  { name: 'Strawberry', emoji: '🍓' },
-  { name: 'Watermelon', emoji: '🍉' },
-  { name: 'Pineapple', emoji: '🍍' },
-  { name: 'Mango', emoji: '🥭' },
-  { name: 'Cherry', emoji: '🍒' },
-  { name: 'Peach', emoji: '🍑' },
-  { name: 'Pear', emoji: '🍐' },
-  { name: 'Kiwi', emoji: '🥝' },
-  { name: 'Lemon', emoji: '🍋' },
-  { name: 'Coconut', emoji: '🥥' },
-  { name: 'Avocado', emoji: '🥑' },
-  { name: 'Melon', emoji: '🍈' },
-  { name: 'Blueberry', emoji: '🫐' },
-  { name: 'Tomato', emoji: '🍅' },
-  { name: 'Eggplant', emoji: '🍆' },
-  { name: 'Carrot', emoji: '🥕' },
-  { name: 'Corn', emoji: '🌽' },
-  { name: 'Broccoli', emoji: '🥦' },
-  { name: 'Cucumber', emoji: '🥒' },
-  { name: 'Bell Pepper', emoji: '🫑' },
-  { name: 'Hot Pepper', emoji: '🌶️' },
-  { name: 'Potato', emoji: '🥔' },
-  { name: 'Garlic', emoji: '🧄' },
-  { name: 'Onion', emoji: '🧅' },
-  { name: 'Mushroom', emoji: '🍄' },
-  { name: 'Peanut', emoji: '🥜' },
-  { name: 'Chestnut', emoji: '🌰' },
+  { name: 'تفاح', emoji: '🍎' },
+  { name: 'موز', emoji: '🍌' },
+  { name: 'برتقال', emoji: '🍊' },
+  { name: 'عنب', emoji: '🍇' },
+  { name: 'فراولة', emoji: '🍓' },
+  { name: 'بطيخ', emoji: '🍉' },
+  { name: 'أناناس', emoji: '🍍' },
+  { name: 'مانجو', emoji: '🥭' },
+  { name: 'كرز', emoji: '🍒' },
+  { name: 'خوخ', emoji: '🍑' },
+  { name: 'كمثرى', emoji: '🍐' },
+  { name: 'كيوي', emoji: '🥝' },
+  { name: 'ليمون', emoji: '🍋' },
+  { name: 'جوز هند', emoji: '🥥' },
+  { name: 'أفوكادو', emoji: '🥑' },
+  { name: 'شمام', emoji: '🍈' },
+  { name: 'توت أزرق', emoji: '🫐' },
+  { name: 'طماطم', emoji: '🍅' },
+  { name: 'باذنجان', emoji: '🍆' },
+  { name: 'جزر', emoji: '🥕' },
+  { name: 'ذرة', emoji: '🌽' },
+  { name: 'بروكلي', emoji: '🥦' },
+  { name: 'خيار', emoji: '🥒' },
+  { name: 'فلفل بارد', emoji: '🫑' },
+  { name: 'فلفل حار', emoji: '🌶️' },
+  { name: 'بطاطس', emoji: '🥔' },
+  { name: 'ثوم', emoji: '🧄' },
+  { name: 'بصل', emoji: '🧅' },
+  { name: 'فطر', emoji: '🍄' },
+  { name: 'فول سوداني', emoji: '🥜' },
+  { name: 'كستناء', emoji: '🌰' },
 ];
 
 export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelName, isConnected, error }) => {
@@ -242,50 +242,50 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
   const renderPhase = () => {
     if (phase === 'config') {
       return (
-        <div className="flex flex-col items-center justify-center h-full w-full max-w-2xl mx-auto">
+        <div className="flex flex-col items-center justify-center h-full w-full max-w-2xl mx-auto font-arabic" dir="rtl">
           <div className="bg-zinc-800/50 border border-zinc-700 p-8 rounded-2xl w-full">
             <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
               <Swords className="w-8 h-8 text-rose-400" />
-              Fruit War Settings
+              إعدادات حرب الفواكه
             </h2>
             
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-zinc-400 mb-4">Select Game Mode</label>
+                <label className="block text-sm font-medium text-zinc-400 mb-4">اختر نمط اللعبة</label>
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     onClick={() => setMode('voting')}
-                    className={`p-6 rounded-xl border-2 text-left transition-all ${
+                    className={`p-6 rounded-xl border-2 text-right transition-all ${
                       mode === 'voting' 
-                        ? 'bg-rose-500/20 border-rose-500 text-white' 
+                        ? 'bg-yellow-500/20 border-yellow-500 text-white' 
                         : 'bg-zinc-900 border-zinc-700 text-zinc-400 hover:border-zinc-500'
                     }`}
                   >
-                    <Users className={`w-8 h-8 mb-3 ${mode === 'voting' ? 'text-rose-400' : 'text-zinc-500'}`} />
-                    <h3 className="text-lg font-bold mb-1">Voting Mode</h3>
-                    <p className="text-sm opacity-80">Chat votes to eliminate a fruit each round.</p>
+                    <Users className={`w-8 h-8 mb-3 ${mode === 'voting' ? 'text-yellow-500' : 'text-zinc-500'}`} />
+                    <h3 className="text-lg font-bold mb-1">نمط التصويت</h3>
+                    <p className="text-sm opacity-80">الدردشة تصوت لإقصاء فاكهة في كل جولة.</p>
                   </button>
                   
                   <button
                     onClick={() => setMode('roulette')}
-                    className={`p-6 rounded-xl border-2 text-left transition-all ${
+                    className={`p-6 rounded-xl border-2 text-right transition-all ${
                       mode === 'roulette' 
                         ? 'bg-amber-500/20 border-amber-500 text-white' 
                         : 'bg-zinc-900 border-zinc-700 text-zinc-400 hover:border-zinc-500'
                     }`}
                   >
                     <Dices className={`w-8 h-8 mb-3 ${mode === 'roulette' ? 'text-amber-400' : 'text-zinc-500'}`} />
-                    <h3 className="text-lg font-bold mb-1">Roulette Mode</h3>
-                    <p className="text-sm opacity-80">Random player is chosen to eliminate someone.</p>
+                    <h3 className="text-lg font-bold mb-1">نمط الروليت</h3>
+                    <p className="text-sm opacity-80">يتم اختيار لاعب عشوائي لإقصاء شخص ما.</p>
                   </button>
                 </div>
               </div>
               
               <button 
                 onClick={() => setPhase('joining')}
-                className="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 mt-8"
+                className="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 mt-8"
               >
-                <Play className="w-5 h-5" /> Open Lobby
+                <Play className="w-5 h-5" /> فتح الردهة
               </button>
             </div>
           </div>
@@ -295,17 +295,17 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
 
     if (phase === 'joining') {
       return (
-        <div className="flex flex-col items-center justify-center h-full w-full">
-          <h2 className="text-4xl font-bold text-white mb-4">Waiting for Players</h2>
+        <div className="flex flex-col items-center justify-center h-full w-full font-arabic" dir="rtl">
+          <h2 className="text-4xl font-bold text-white mb-4">بانتظار اللاعبين</h2>
           <p className="text-xl text-zinc-400 mb-8">
-            Type <span className="text-rose-400 font-mono bg-rose-500/10 px-3 py-1 rounded-lg">!join</span> in chat to get your fruit!
+            اكتب <span className="text-yellow-500 font-mono bg-yellow-500/10 px-3 py-1 rounded-lg">!join</span> في الدردشة للحصول على فاكهتك!
           </p>
           
           <div className="bg-zinc-800/50 border border-zinc-700 rounded-2xl p-6 w-full max-w-4xl mb-8 min-h-[300px] max-h-[500px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-medium text-zinc-300">Joined Players</h3>
-              <span className="bg-rose-500/20 text-rose-400 px-3 py-1 rounded-full text-sm font-bold">
-                {allPlayersList.length} / {ALL_FRUITS.length} Max
+              <h3 className="text-lg font-medium text-zinc-300">اللاعبون المنضمون</h3>
+              <span className="bg-yellow-500/20 text-yellow-500 px-3 py-1 rounded-full text-sm font-bold">
+                {allPlayersList.length} / {ALL_FRUITS.length} الأقصى
               </span>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -320,13 +320,13 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
                     <span className="text-3xl">❓</span>
                     <div className="overflow-hidden">
                       <p className="text-zinc-200 font-bold truncate">{p.username}</p>
-                      <p className="text-zinc-500 text-xs">Fruit Hidden</p>
+                      <p className="text-zinc-500 text-xs">الفاكهة مخفية</p>
                     </div>
                   </motion.div>
                 ))}
               </AnimatePresence>
               {allPlayersList.length === 0 && (
-                <div className="col-span-full text-zinc-500 italic text-center py-12">No players joined yet...</div>
+                <div className="col-span-full text-zinc-500 italic text-center py-12">لم ينضم أي لاعب بعد...</div>
               )}
             </div>
           </div>
@@ -334,9 +334,9 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
           <button 
             onClick={startGame}
             disabled={allPlayersList.length < 2}
-            className="bg-rose-600 hover:bg-rose-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-white font-bold py-4 px-12 rounded-xl transition-colors flex items-center justify-center gap-2 text-lg"
+            className="bg-yellow-600 hover:bg-yellow-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-black font-bold py-4 px-12 rounded-xl transition-colors flex items-center justify-center gap-2 text-lg"
           >
-            Start War <Swords className="w-5 h-5" />
+            بدء الحرب <Swords className="w-5 h-5" />
           </button>
         </div>
       );
@@ -344,19 +344,19 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
 
     if (phase === 'playing') {
       return (
-        <div className="flex flex-col h-full w-full">
+        <div className="flex flex-col h-full w-full font-arabic" dir="rtl">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-3xl font-black text-white flex items-center gap-3">
-                <Swords className="w-8 h-8 text-rose-500" />
-                Fruit War: {mode === 'voting' ? 'Voting Mode' : 'Roulette Mode'}
+                <Swords className="w-8 h-8 text-yellow-500" />
+                حرب الفواكه: {mode === 'voting' ? 'نمط التصويت' : 'نمط الروليت'}
               </h2>
-              <p className="text-zinc-400 mt-1">{activePlayers.length} Fruits Remaining</p>
+              <p className="text-zinc-400 mt-1">{activePlayers.length} فواكه متبقية</p>
             </div>
 
             {mode === 'voting' && (
-              <div className={`flex items-center gap-2 text-3xl font-bold font-mono px-6 py-3 rounded-xl border ${timeLeft !== null && timeLeft <= 5 ? 'bg-red-500/20 border-red-500/50 text-red-400 animate-pulse' : 'bg-zinc-800/80 border-zinc-700 text-white'}`}>
+              <div className={`flex items-center gap-2 text-3xl font-bold font-mono px-6 py-3 rounded-xl border ${timeLeft !== null && timeLeft <= 5 ? 'bg-red-500/20 border-red-500/50 text-red-400 animate-pulse' : 'bg-zinc-800/80 border-zinc-700 text-white'}`} dir="ltr">
                 <Clock className="w-6 h-6" /> 00:{timeLeft?.toString().padStart(2, '0') || '00'}
               </div>
             )}
@@ -369,21 +369,21 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
                 <div className="text-center">
                   <Skull className="w-16 h-16 text-red-500 mx-auto mb-4" />
                   <h3 className="text-3xl font-bold text-white mb-2">
-                    {eliminatedThisRound?.fruit.emoji} {eliminatedThisRound?.fruit.name} was eliminated!
+                    تم إقصاء {eliminatedThisRound?.fruit.emoji} {eliminatedThisRound?.fruit.name}!
                   </h3>
-                  <p className="text-zinc-400 mb-6">They received the most votes.</p>
+                  <p className="text-zinc-400 mb-6">لقد حصلوا على أكبر عدد من الأصوات.</p>
                   <button 
                     onClick={startVotingRound}
-                    className="bg-rose-600 hover:bg-rose-500 text-white px-8 py-3 rounded-xl font-bold"
+                    className="bg-yellow-600 hover:bg-yellow-500 text-black px-8 py-3 rounded-xl font-bold"
                   >
-                    Next Round
+                    الجولة التالية
                   </button>
                 </div>
               ) : (
                 <div className="text-center">
-                  <h3 className="text-3xl font-bold text-white mb-4">Vote to Eliminate!</h3>
+                  <h3 className="text-3xl font-bold text-white mb-4">صوت للإقصاء!</h3>
                   <p className="text-xl text-zinc-400">
-                    Type a <span className="text-rose-400 font-bold">fruit name</span> or <span className="text-rose-400 font-bold">emoji</span> in chat to vote.
+                    اكتب <span className="text-yellow-500 font-bold">اسم الفاكهة</span> أو <span className="text-yellow-500 font-bold">الرمز التعبيري</span> في الدردشة للتصويت.
                   </p>
                 </div>
               )
@@ -392,12 +392,12 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
               <div className="text-center w-full max-w-md">
                 {rouletteState === 'idle' && (
                   <>
-                    <h3 className="text-3xl font-bold text-white mb-6">Spin to Choose the Executioner</h3>
+                    <h3 className="text-3xl font-bold text-white mb-6">أدر لاختيار الجلاد</h3>
                     <button 
                       onClick={spinRoulette}
                       className="bg-amber-600 hover:bg-amber-500 text-white px-12 py-4 rounded-xl font-bold text-xl w-full flex items-center justify-center gap-3"
                     >
-                      <Dices className="w-6 h-6" /> Spin Roulette
+                      <Dices className="w-6 h-6" /> تدوير الروليت
                     </button>
                   </>
                 )}
@@ -421,7 +421,7 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
                     <div className="text-6xl mb-4 animate-bounce">{selectedPlayer.fruit.emoji}</div>
                     <h3 className="text-3xl font-bold text-amber-400 mb-2">{selectedPlayer.fruit.name}</h3>
                     <p className="text-lg text-zinc-300">
-                      You have the power! Type a fruit name or emoji in chat to eliminate them.
+                      لديك القوة! اكتب اسم فاكهة أو رمزاً تعبيرياً في الدردشة لإقصائهم.
                     </p>
                   </div>
                 )}
@@ -431,7 +431,7 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
 
           {/* Alive Players Grid */}
           <div className="flex-1 overflow-y-auto">
-            <h3 className="text-lg font-medium text-zinc-400 mb-4">Battlefield</h3>
+            <h3 className="text-lg font-medium text-zinc-400 mb-4">ساحة المعركة</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
               <AnimatePresence>
                 {allPlayersList.map((p) => (
@@ -458,12 +458,12 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
                       {p.fruit.name}
                     </p>
                     <p className={`text-xs relative z-0 ${p.isAlive ? 'text-zinc-400' : 'text-zinc-700'}`}>
-                      {p.isAlive ? 'Unknown Player' : p.username}
+                      {p.isAlive ? 'لاعب مجهول' : p.username}
                     </p>
                     
                     {/* Vote Count Badge */}
                     {mode === 'voting' && p.isAlive && getVoteCount(p.fruit.name) > 0 && !showRoundResult && (
-                      <div className="absolute top-2 right-2 bg-rose-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+                      <div className="absolute top-2 left-2 bg-yellow-500 text-black text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
                         {getVoteCount(p.fruit.name)}
                       </div>
                     )}
@@ -479,9 +479,9 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
     if (phase === 'winner') {
       const winner = activePlayers[0];
       return (
-        <div className="flex flex-col items-center justify-center h-full w-full max-w-4xl mx-auto text-center">
+        <div className="flex flex-col items-center justify-center h-full w-full max-w-4xl mx-auto text-center font-arabic" dir="rtl">
           <Trophy className="w-24 h-24 text-yellow-400 mb-8" />
-          <h2 className="text-6xl font-black text-white mb-4 tracking-tight">Fruit War Champion!</h2>
+          <h2 className="text-6xl font-black text-white mb-4 tracking-tight">بطل حرب الفواكه!</h2>
           
           {winner ? (
             <motion.div 
@@ -491,10 +491,10 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
             >
               <div className="text-9xl mb-6">{winner.fruit.emoji}</div>
               <h3 className="text-4xl font-bold text-yellow-400 mb-2">{winner.username}</h3>
-              <p className="text-xl text-zinc-400">The last {winner.fruit.name} standing!</p>
+              <p className="text-xl text-zinc-400">الصامد الأخير بفاكهة {winner.fruit.name}!</p>
             </motion.div>
           ) : (
-            <p className="text-2xl text-zinc-400 mb-12">Everyone was eliminated! It's a draw!</p>
+            <p className="text-2xl text-zinc-400 mb-12">تم إقصاء الجميع! تعادل!</p>
           )}
 
           <div className="flex gap-4">
@@ -505,13 +505,13 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
               }}
               className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-4 px-8 rounded-xl transition-colors text-lg"
             >
-              Play Again
+              اللعب مرة أخرى
             </button>
             <button 
               onClick={onLeave}
-              className="bg-rose-600 hover:bg-rose-500 text-white font-bold py-4 px-8 rounded-xl transition-colors text-lg"
+              className="bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-4 px-8 rounded-xl transition-colors text-lg"
             >
-              Return to Games
+              العودة للألعاب
             </button>
           </div>
         </div>
@@ -524,12 +524,12 @@ export const FruitWar: React.FC<FruitWarProps> = ({ messages, onLeave, channelNa
   return (
     <div className="flex gap-8 h-[85vh] w-full max-w-[1600px] mx-auto">
       {/* Main Game Area */}
-      <div className="flex-1 bg-zinc-900 rounded-2xl border border-zinc-800 p-8 flex flex-col relative overflow-hidden">
+      <div className="flex-1 bg-zinc-900 rounded-2xl border border-zinc-800 p-8 flex flex-col relative overflow-hidden font-arabic" dir="rtl">
         <button 
           onClick={onLeave} 
-          className="absolute top-6 left-6 text-zinc-500 hover:text-white flex items-center gap-2 transition-colors z-10 bg-zinc-800/50 px-4 py-2 rounded-lg border border-zinc-700"
+          className="absolute top-6 right-6 text-zinc-500 hover:text-white flex items-center gap-2 transition-colors z-10 bg-zinc-800/50 px-4 py-2 rounded-lg border border-zinc-700"
         >
-          <ArrowLeft className="w-5 h-5" /> Back to Lobby
+          <ArrowLeft className="w-5 h-5 rotate-180" /> العودة للردهة
         </button>
         
         <div className="h-full w-full pt-12 flex flex-col">

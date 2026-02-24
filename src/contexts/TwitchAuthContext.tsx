@@ -67,7 +67,7 @@ export function TwitchAuthProvider({ children }: { children: ReactNode }) {
       );
 
       if (!authWindow) {
-        alert('Please allow popups for this site to connect your account.');
+        alert('يرجى السماح بالنوافذ المنبثقة لهذا الموقع لربط حسابك.');
       }
     } catch (error) {
       console.error('OAuth error:', error);

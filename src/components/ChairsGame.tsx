@@ -224,20 +224,20 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
   const renderPhase = () => {
     if (phase === 'config') {
       return (
-        <div className="flex flex-col items-center justify-center h-full w-full max-w-2xl mx-auto">
+        <div className="flex flex-col items-center justify-center h-full w-full max-w-2xl mx-auto font-arabic" dir="rtl">
           <div className="bg-zinc-800/50 border border-zinc-700 p-8 rounded-2xl w-full text-center">
             <h2 className="text-3xl font-bold text-white mb-6 flex items-center justify-center gap-3">
-              <Armchair className="w-8 h-8 text-orange-400" />
-              Chairs Game
+              <Armchair className="w-8 h-8 text-yellow-500" />
+              لعبة الكراسي
             </h2>
             <p className="text-zinc-400 mb-8">
-              Musical chairs for your Twitch chat! Players type the number of the chair to sit down. The last one standing is eliminated.
+              لعبة الكراسي الموسيقية لدردشة تويتش! يكتب اللاعبون رقم الكرسي للجلوس. آخر لاعب يبقى واقفاً يتم إقصاؤه.
             </p>
             <button 
               onClick={() => setPhase('joining')}
-              className="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2"
             >
-              <Play className="w-5 h-5" /> Open Lobby
+              <Play className="w-5 h-5" /> فتح الردهة
             </button>
           </div>
         </div>
@@ -246,17 +246,17 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
 
     if (phase === 'joining') {
       return (
-        <div className="flex flex-col items-center justify-center h-full w-full">
-          <h2 className="text-4xl font-bold text-white mb-4">Waiting for Players</h2>
+        <div className="flex flex-col items-center justify-center h-full w-full font-arabic" dir="rtl">
+          <h2 className="text-4xl font-bold text-white mb-4">بانتظار اللاعبين</h2>
           <p className="text-xl text-zinc-400 mb-8">
-            Type <span className="text-orange-400 font-mono bg-orange-500/10 px-3 py-1 rounded-lg">!join</span> in chat to play
+            اكتب <span className="text-yellow-500 font-mono bg-yellow-500/10 px-3 py-1 rounded-lg">!join</span> في الدردشة للعب
           </p>
           
           <div className="bg-zinc-800/50 border border-zinc-700 rounded-2xl p-6 w-full max-w-4xl mb-8 min-h-[300px] max-h-[500px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-medium text-zinc-300">Joined Players</h3>
-              <span className="bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full text-sm font-bold">
-                {allPlayersList.length} Total
+              <h3 className="text-lg font-medium text-zinc-300">اللاعبون المنضمون</h3>
+              <span className="bg-yellow-500/20 text-yellow-500 px-3 py-1 rounded-full text-sm font-bold">
+                المجموع {allPlayersList.length}
               </span>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -274,7 +274,7 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
                 ))}
               </AnimatePresence>
               {allPlayersList.length === 0 && (
-                <div className="w-full text-zinc-500 italic text-center py-12">No players joined yet...</div>
+                <div className="w-full text-zinc-500 italic text-center py-12">لم ينضم أي لاعب بعد...</div>
               )}
             </div>
           </div>
@@ -282,9 +282,9 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
           <button 
             onClick={startGame}
             disabled={allPlayersList.length < 2}
-            className="bg-orange-600 hover:bg-orange-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-white font-bold py-4 px-12 rounded-xl transition-colors flex items-center justify-center gap-2 text-lg"
+            className="bg-yellow-600 hover:bg-yellow-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-black font-bold py-4 px-12 rounded-xl transition-colors flex items-center justify-center gap-2 text-lg"
           >
-            Start Game <Play className="w-5 h-5" />
+            بدء اللعبة <Play className="w-5 h-5" />
           </button>
         </div>
       );
@@ -295,13 +295,13 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
       const alivePlayers = allPlayersList.filter(p => p.isAlive || (roundState === 'round_end' && p.username === eliminatedPlayer));
 
       return (
-        <div className="flex flex-col items-center justify-center h-full w-full">
+        <div className="flex flex-col items-center justify-center h-full w-full font-arabic" dir="rtl">
           <div className="relative w-full max-w-2xl aspect-square mx-auto bg-[#3e2723] rounded-full border-8 border-[#5d4037] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex items-center justify-center">
             {/* Grid pattern overlay */}
             <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
             
             {/* Center text */}
-            <div className="absolute top-12 text-3xl font-bold text-[#d7ccc8] opacity-50" dir="rtl">جولة {roundNumber}</div>
+            <div className="absolute top-12 text-3xl font-bold text-[#d7ccc8] opacity-50">جولة {roundNumber}</div>
             
             {/* Music Indicator */}
             <AnimatePresence>
@@ -313,7 +313,7 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
                   className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 flex flex-col items-center justify-center z-10"
                 >
                   <Music className="w-20 h-20 text-indigo-400 animate-bounce" />
-                  <div className="text-indigo-300 font-bold mt-4 text-xl animate-pulse">Music Playing...</div>
+                  <div className="text-indigo-300 font-bold mt-4 text-xl animate-pulse">الموسيقى تعمل...</div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -406,9 +406,9 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
     if (phase === 'winner') {
       const winner = activePlayers[0];
       return (
-        <div className="flex flex-col items-center justify-center h-full w-full max-w-4xl mx-auto text-center">
+        <div className="flex flex-col items-center justify-center h-full w-full max-w-4xl mx-auto text-center font-arabic" dir="rtl">
           <Trophy className="w-24 h-24 text-yellow-400 mb-8" />
-          <h2 className="text-6xl font-black text-white mb-4 tracking-tight" dir="rtl">مبروك! {winner?.username} فاز!</h2>
+          <h2 className="text-6xl font-black text-white mb-4 tracking-tight">مبروك! {winner?.username} فاز!</h2>
           
           {winner && (
             <motion.div 
@@ -423,7 +423,7 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
                 {winner.username.substring(0, 2).toUpperCase()}
               </div>
               <h3 className="text-4xl font-bold text-yellow-400 mb-2">{winner.username}</h3>
-              <p className="text-xl text-zinc-400">The last one standing!</p>
+              <p className="text-xl text-zinc-400">الصامد الأخير!</p>
             </motion.div>
           )}
 
@@ -435,13 +435,13 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
               }}
               className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-4 px-8 rounded-xl transition-colors text-lg"
             >
-              Play Again
+              اللعب مرة أخرى
             </button>
             <button 
               onClick={onLeave}
-              className="bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 px-8 rounded-xl transition-colors text-lg"
+              className="bg-yellow-600 hover:bg-yellow-500 text-black font-bold py-4 px-8 rounded-xl transition-colors text-lg"
             >
-              Return to Games
+              العودة للألعاب
             </button>
           </div>
         </div>
@@ -455,12 +455,12 @@ export const ChairsGame: React.FC<ChairsGameProps> = ({ messages, onLeave, chann
     <div className="flex gap-8 h-[85vh] w-full max-w-[1600px] mx-auto">
       <audio ref={audioRef} />
       {/* Main Game Area */}
-      <div className="flex-1 bg-zinc-900 rounded-2xl border border-zinc-800 p-8 flex flex-col relative overflow-hidden">
+      <div className="flex-1 bg-zinc-900 rounded-2xl border border-zinc-800 p-8 flex flex-col relative overflow-hidden font-arabic" dir="rtl">
         <button 
           onClick={onLeave} 
-          className="absolute top-6 left-6 text-zinc-500 hover:text-white flex items-center gap-2 transition-colors z-40 bg-zinc-800/50 px-4 py-2 rounded-lg border border-zinc-700"
+          className="absolute top-6 right-6 text-zinc-500 hover:text-white flex items-center gap-2 transition-colors z-40 bg-zinc-800/50 px-4 py-2 rounded-lg border border-zinc-700"
         >
-          <ArrowLeft className="w-5 h-5" /> Back to Lobby
+          <ArrowLeft className="w-5 h-5 rotate-180" /> العودة للردهة
         </button>
         
         <div className="h-full w-full flex flex-col">

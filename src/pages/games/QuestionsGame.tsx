@@ -42,7 +42,7 @@ export function QuestionsGame() {
       setGameState('playing');
       setCurrentQuestion(1);
     } else {
-      alert('Please wait for players to join!');
+      alert('يرجى الانتظار حتى ينضم اللاعبون!');
     }
   };
 
@@ -61,7 +61,7 @@ export function QuestionsGame() {
       {/* Background */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black opacity-80" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/5 rounded-full blur-2xl" />
       </div>
 
       {/* Header */}
@@ -74,7 +74,7 @@ export function QuestionsGame() {
             <ArrowLeft className="w-5 h-5 text-zinc-300" />
           </button>
           <h1 className="text-2xl font-bold font-arabic text-yellow-500 glow-gold-text">
-            سؤال و جواب
+            سين جيم
           </h1>
         </div>
 
