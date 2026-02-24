@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Cairo", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "Cairo", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-brand-gold: #d4af37;
+  --color-brand-gold-light: #ffd700;
+  --color-brand-black: #0a0a0a;
+}
+
+body {
+  background-color: var(--color-brand-black);
+  color: white;
+  font-family: var(--font-sans);
+}
+
+.glow-gold {
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+.glow-gold-text {
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+.border-gold {
+  border-color: var(--color-brand-gold);
+}
+
+.text-gold {
+  color: var(--color-brand-gold);
+}
+
+.text-gold-light {
+  color: var(--color-brand-gold-light);
+}
+
+.bg-gold {
+  background-color: var(--color-brand-gold);
+}
+
+.bg-gold-light {
+  background-color: var(--color-brand-gold-light);
+}
