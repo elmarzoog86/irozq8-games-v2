@@ -10,6 +10,41 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
+// Twitch OAuth URL Helper
+app.get("/api/auth/url", (req, res) => {
+  const host = req.get('host');
+  const protocol = host?.includes('localhost') ? 'http' : 'https';
+  const redirectUri = `${protocol}://${host}/auth/callback`;
+  
+  const params = new URLSearchParams({
+    client_id: process.env.TWITCH_CLIENT_ID || '',
+    redirect_uri: redirectUri,
+    response_type: 'code',
+    scope: 'chat:read chat:edit whispers:read whispers:edit',
+  });
+
+  res.json({ url: `https://id.twitch.tv/oauth2/authorize?${params.toString()}` });
+});
+
+// OAuth Callback
+app.get("/auth/callback", (req, res) => {
+  res.send(`
+    <html>
+      <body>
+        <script>
+          if (window.opener) {
+            window.opener.postMessage({ type: 'OAUTH_AUTH_SUCCESS' }, '*');
+            window.close();
+          } else {
+            window.location.href = '/';
+          }
+        </script>
+        <p>تم تسجيل الدخول بنجاح. سيتم إغلاق هذه النافذة تلقائياً.</p>
+      </body>
+    </html>
+  `);
+});
+
 // 404 handler for API routes
 app.all("/api/*", (req, res) => {
   res.status(404).json({
