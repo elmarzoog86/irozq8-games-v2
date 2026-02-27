@@ -94,92 +94,94 @@ export const LiarsBarGame: React.FC<{ onLeave: () => void }> = ({ onLeave }) => 
   }, [state]);
 
   useEffect(() => {
-    console.log('Connecting to socket server...');
-    const newSocket = io({
-      path: '/socket.io/',
-      transports: ['websocket', 'polling'],
-      reconnectionAttempts: 5,
-      timeout: 10000,
-    });
-
-    newSocket.on('connect', () => {
-      console.log('Socket connected:', newSocket.id);
-      setSocket(newSocket);
-      newSocket.emit('join_room', { roomId, name: 'Streamer', isStreamer: true, character: selectedChar });
-    });
-
-    newSocket.on('connect_error', (err) => {
-      console.error('Socket connection error:', err);
-    });
-
-    newSocket.on("error", (err: string) => { // Handle 'error' event from server
-      console.error("Server error:", err);
-    });
-
-    newSocket.on('state_update', (newState: GameState) => {
-      console.log('Received state update:', newState);
-      setState(newState);
-    });
-
-    newSocket.on('cards_played', ({ name, count }) => {
-      playSound('card_play');
-      setEventLog(prev => [`لعب ${name} ${count} بطاقات.`, ...prev].slice(0, 5));
+    // Only connect if we haven't already
+    if (!socketRef.current) {
+      console.log('Initializing socket connection for host...');
       
-      // Catch phrase logic
-      const player = stateRef.current?.players.find(p => p.name === name);
-      if (player) {
-        const char = CHARACTERS.find(c => c.id === player.character);
-        if (char && Math.random() > 0.5) {
-          const utterance = new SpeechSynthesisUtterance(char.phrase);
-          utterance.lang = 'ar-SA';
-          window.speechSynthesis.speak(utterance);
+      const newSocket = io({
+        path: '/api/socket.io',
+        addTrailingSlash: false,
+      });
+
+      newSocket.on('connect', () => {
+        console.log('Socket connected:', newSocket.id);
+        setSocket(newSocket);
+        newSocket.emit('join_room', { roomId, name: 'Streamer', isStreamer: true, character: selectedChar });
+      });
+
+      newSocket.on('connect_error', (err) => {
+        console.error('Socket connection error:', err);
+      });
+
+      newSocket.on("error", (err: string) => { // Handle 'error' event from server
+        console.error("Server error:", err);
+      });
+
+      newSocket.on('state_update', (newState: GameState) => {
+        console.log('Received state update:', newState);
+        setState(newState);
+      });
+
+      newSocket.on('cards_played', ({ name, count }) => {
+        playSound('card_play');
+        setEventLog(prev => [`لعب ${name} ${count} بطاقات.`, ...prev].slice(0, 5));
+        
+        // Catch phrase logic
+        const player = stateRef.current?.players.find(p => p.name === name);
+        if (player) {
+          const char = CHARACTERS.find(c => c.id === player.character);
+          if (char && Math.random() > 0.5) {
+            const utterance = new SpeechSynthesisUtterance(char.phrase);
+            utterance.lang = 'ar-SA';
+            window.speechSynthesis.speak(utterance);
+          }
         }
-      }
-    });
+      });
 
-    newSocket.on('liar_result', ({ isLying, loserName, actualCards, forced }) => {
-      playSound('liar_call');
-      stopSuspense();
-      
-      // Reveal cards on the table
-      setRevealedCards(actualCards);
-      
-      // Small delay before suspense music to let the buzzer be heard
-      setTimeout(() => {
-        suspenseAudio.current = playSound('suspense');
-        heartbeatAudio.current = playSound('heartbeat', true);
-      }, 500);
-      
-      setEventLog(prev => [
-        `${forced ? '[إجباري] ' : ''}${isLying ? 'تم كشفه!' : 'آمن!'} ${loserName} يجب أن يسحب الزناد. (البطاقات كانت: ${actualCards.map(c => translateCard(c)).join(', ')})`,
-        ...prev
-      ].slice(0, 5));
-    });
-
-    newSocket.on('shot_fired', ({ dead, name }) => {
-      const currentState = stateRef.current;
-      const loser = currentState?.players.find(p => p.name === name) || currentState?.players.find(p => p.id === currentState.loserId);
-      
-      if (loser) {
-        setFiringResult({ dead, playerId: loser.id });
+      newSocket.on('liar_result', ({ isLying, loserName, actualCards, forced }) => {
+        playSound('liar_call');
+        stopSuspense();
+        
+        // Reveal cards on the table
+        setRevealedCards(actualCards);
+        
+        // Small delay before suspense music to let the buzzer be heard
         setTimeout(() => {
-          setFiringResult(null);
-          setRevealedCards(null); // Clear revealed cards after shot
+          suspenseAudio.current = playSound('suspense');
+          heartbeatAudio.current = playSound('heartbeat', true);
+        }, 500);
+        
+        setEventLog(prev => [
+          `${forced ? '[إجباري] ' : ''}${isLying ? 'تم كشفه!' : 'آمن!'} ${loserName} يجب أن يسحب الزناد. (البطاقات كانت: ${actualCards.map(c => translateCard(c)).join(', ')})`,
+          ...prev
+        ].slice(0, 5));
+      });
+
+      newSocket.on('shot_fired', ({ dead, name }) => {
+        const currentState = stateRef.current;
+        const loser = currentState?.players.find(p => p.name === name) || currentState?.players.find(p => p.id === currentState.loserId);
+        
+        if (loser) {
+          setFiringResult({ dead, playerId: loser.id });
+          setTimeout(() => {
+            setFiringResult(null);
+            setRevealedCards(null); // Clear revealed cards after shot
+            stopSuspense();
+            playSound(dead ? 'bang' : 'click');
+            setEventLog(prev => [dead ? `💥 بانغ! ${name} خرج من اللعبة.` : `💨 كليك... ${name} آمن.`, ...prev].slice(0, 5));
+          }, 2000);
+        } else {
+          setRevealedCards(null);
           stopSuspense();
           playSound(dead ? 'bang' : 'click');
-          setEventLog(prev => [dead ? `💥 بانغ! ${name} خرج من اللعبة.` : `💨 كليك... ${name} آمن.`, ...prev].slice(0, 5));
-        }, 2000);
-      } else {
-        setRevealedCards(null);
-        stopSuspense();
-        playSound(dead ? 'bang' : 'click');
-      }
-    });
+        }
+      });
 
-    return () => {
-      newSocket.disconnect();
-      stopSuspense();
-    };
+      return () => {
+        newSocket.disconnect();
+        stopSuspense();
+      };
+    }
   }, [roomId, selectedChar]);
 
   const copyLink = () => {

@@ -6,11 +6,14 @@ import { TEAM_FEUD_QUESTIONS } from "./src/data/team-feud-questions";
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
+  path: '/api/socket.io/',
   cors: {
     origin: "*",
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST"],
+    credentials: true
   },
-  transports: ['websocket', 'polling']
+  transports: ['polling'],
+  allowEIO3: true
 });
 
 const PORT = 3000;
@@ -851,6 +854,6 @@ async function startServer() {
 
 export default app;
 
-if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+if (process.env.NODE_ENV !== "production") {
   startServer();
 }

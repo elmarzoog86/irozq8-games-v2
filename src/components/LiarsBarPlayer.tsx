@@ -92,79 +92,81 @@ export const LiarsBarPlayer: React.FC = () => {
   }, [state]);
 
   useEffect(() => {
-    const newSocket = io({
-      path: '/socket.io/',
-      transports: ['websocket', 'polling'],
-      reconnectionAttempts: 5,
-      timeout: 10000,
-    });
-    setSocket(newSocket);
+    if (!socket) {
+      console.log('Initializing socket connection for player...');
+      
+      const newSocket = io({
+        path: '/api/socket.io',
+        addTrailingSlash: false,
+      });
+      setSocket(newSocket);
 
-    newSocket.on('state_update', (newState: GameState) => {
-      setState(newState);
-    });
+      newSocket.on('state_update', (newState: GameState) => {
+        setState(newState);
+      });
 
-    newSocket.on('kicked', () => {
-      alert('لقد تم طردك من الغرفة.');
-      window.location.href = '/';
-    });
+      newSocket.on('kicked', () => {
+        alert('لقد تم طردك من الغرفة.');
+        window.location.href = '/';
+      });
 
-    newSocket.on('error', (err: string) => {
-      alert(err);
-      window.location.href = '/';
-    });
+      newSocket.on('error', (err: string) => {
+        alert(err);
+        window.location.href = '/';
+      });
 
-    newSocket.on('liar_result', ({ isLying, loserName, actualCards }) => {
-      playSound('liar_call');
-      stopSuspense();
-      setRevealedCards(actualCards);
-      setTimeout(() => {
-        suspenseAudio.current = playSound('suspense');
-        heartbeatAudio.current = playSound('heartbeat', true);
-      }, 500);
-      setMessage(isLying ? `تم كشفه! ${loserName} كاذب!` : `آمن! ${loserName} كان يقول الحقيقة!`);
-      setTimeout(() => setMessage(''), 5000);
-    });
-
-    newSocket.on('shot_fired', ({ dead, name }) => {
-      const currentState = stateRef.current;
-      const loser = currentState?.players.find(p => p.name === name) || currentState?.players.find(p => p.id === currentState.loserId);
-      if (loser) {
-        setFiringResult({ dead, playerId: loser.id });
+      newSocket.on('liar_result', ({ isLying, loserName, actualCards }) => {
+        playSound('liar_call');
+        stopSuspense();
+        setRevealedCards(actualCards);
         setTimeout(() => {
-          setFiringResult(null);
+          suspenseAudio.current = playSound('suspense');
+          heartbeatAudio.current = playSound('heartbeat', true);
+        }, 500);
+        setMessage(isLying ? `تم كشفه! ${loserName} كاذب!` : `آمن! ${loserName} كان يقول الحقيقة!`);
+        setTimeout(() => setMessage(''), 5000);
+      });
+
+      newSocket.on('shot_fired', ({ dead, name }) => {
+        const currentState = stateRef.current;
+        const loser = currentState?.players.find(p => p.name === name) || currentState?.players.find(p => p.id === currentState.loserId);
+        if (loser) {
+          setFiringResult({ dead, playerId: loser.id });
+          setTimeout(() => {
+            setFiringResult(null);
+            setRevealedCards(null);
+            stopSuspense();
+            playSound(dead ? 'bang' : 'click');
+            setMessage(dead ? `💥 بانغ! مات ${name}.` : `💨 كليك... ${name} آمن.`);
+            setTimeout(() => setMessage(''), 3000);
+          }, 2000);
+        } else {
           setRevealedCards(null);
           stopSuspense();
           playSound(dead ? 'bang' : 'click');
-          setMessage(dead ? `💥 بانغ! مات ${name}.` : `💨 كليك... ${name} آمن.`);
-          setTimeout(() => setMessage(''), 3000);
-        }, 2000);
-      } else {
-        setRevealedCards(null);
-        stopSuspense();
-        playSound(dead ? 'bang' : 'click');
-      }
-    });
-
-    newSocket.on('cards_played', ({ name }: { name: string }) => {
-      playSound('card_play');
-      
-      // Catch phrase logic
-      const player = stateRef.current?.players.find(p => p.name === name);
-      if (player) {
-        const char = CHARACTERS.find(c => c.id === player.character);
-        if (char && Math.random() > 0.5) {
-          const utterance = new SpeechSynthesisUtterance(char.phrase);
-          utterance.lang = 'ar-SA';
-          window.speechSynthesis.speak(utterance);
         }
-      }
-    });
+      });
 
-    return () => {
-      newSocket.disconnect();
-      stopSuspense();
-    };
+      newSocket.on('cards_played', ({ name }: { name: string }) => {
+        playSound('card_play');
+        
+        // Catch phrase logic
+        const player = stateRef.current?.players.find(p => p.name === name);
+        if (player) {
+          const char = CHARACTERS.find(c => c.id === player.character);
+          if (char && Math.random() > 0.5) {
+            const utterance = new SpeechSynthesisUtterance(char.phrase);
+            utterance.lang = 'ar-SA';
+            window.speechSynthesis.speak(utterance);
+          }
+        }
+      });
+
+      return () => {
+        newSocket.disconnect();
+        stopSuspense();
+      };
+    }
   }, []);
 
   const joinRoom = (e: React.FormEvent) => {
