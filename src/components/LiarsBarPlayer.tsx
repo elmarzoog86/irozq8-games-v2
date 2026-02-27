@@ -92,7 +92,12 @@ export const LiarsBarPlayer: React.FC = () => {
   }, [state]);
 
   useEffect(() => {
-    const newSocket = io();
+    const newSocket = io({
+      path: '/socket.io/',
+      transports: ['websocket', 'polling'],
+      reconnectionAttempts: 5,
+      timeout: 10000,
+    });
     setSocket(newSocket);
 
     newSocket.on('state_update', (newState: GameState) => {

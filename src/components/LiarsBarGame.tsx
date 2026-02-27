@@ -95,11 +95,11 @@ export const LiarsBarGame: React.FC<{ onLeave: () => void }> = ({ onLeave }) => 
 
   useEffect(() => {
     console.log('Connecting to socket server...');
-    const newSocket = io(window.location.origin, {
+    const newSocket = io({
       path: '/socket.io/',
       transports: ['websocket', 'polling'],
-     reconnectionAttempts: 5,
-     timeout: 10000,
+      reconnectionAttempts: 5,
+      timeout: 10000,
     });
 
     newSocket.on('connect', () => {
