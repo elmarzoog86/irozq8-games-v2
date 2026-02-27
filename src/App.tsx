@@ -176,6 +176,58 @@ const GAMES = [
   }
 ];
 
+function Background() {
+  return (
+    <>
+      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+        <source src="/background.webm" type="video/webm" />
+        <source src="/background.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
+    </>
+  );
+}
+
+const TopBar = React.memo(() => (
+  <div className="w-full max-w-[95vw] mx-auto flex items-center justify-between mb-8 relative z-20">
+    <div className="flex items-center gap-4">
+      <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+        <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
+      </div>
+      <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
+    </div>
+    <div className="flex items-center gap-4">
+      <a 
+        href="https://www.twitch.tv/irozq8" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
+      >
+        <Twitch className="w-4 h-4 text-[#9146FF]" />
+        <span className="hidden sm:inline">قناتي في تويتش</span>
+      </a>
+      <a 
+        href="https://streamlabs.com/irozq8/tip" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
+      >
+        <Heart className="w-4 h-4 text-emerald-500" />
+        <span className="hidden sm:inline">دعم القناة</span>
+      </a>
+      <a 
+        href="https://discord.com/users/StigQ8" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
+      >
+        <MessageCircle className="w-4 h-4 text-[#5865F2]" />
+        <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
+      </a>
+    </div>
+  </div>
+));
+
 function MainApp() {
   const [channelNameInput, setChannelNameInput] = useState('');
   const [activeChannel, setActiveChannel] = useState('');
@@ -201,684 +253,140 @@ function MainApp() {
     setActiveGame(null);
   };
 
+
+
+  // If not connected to a channel, show login screen
   if (!activeChannel) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 font-arabic relative overflow-hidden bg-black" dir="rtl">
-        {/* Video Background */}
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="absolute inset-0 w-full h-full object-cover z-0 opacity-40"
-        >
-          <source src="/background.webm" type="video/webm" />
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
-
-        {/* Top Bar */}
-        <div className="absolute top-0 left-0 right-0 p-6 flex items-center justify-between z-20 max-w-7xl mx-auto w-full">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
+      <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center justify-center relative overflow-hidden bg-black" dir="rtl">
+        <Background />
+        
+        <div className="relative z-10 w-full max-w-md p-8 bg-black/60 backdrop-blur-xl rounded-[40px] border border-brand-gold/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] flex flex-col items-center">
+          <div className="w-24 h-24 mb-6 bg-brand-gold/10 rounded-3xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_30px_rgba(212,175,55,0.2)]">
+            <img src="/roz.png" alt="Logo" className="w-16 h-16 object-contain" />
           </div>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://www.twitch.tv/irozq8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Twitch className="w-4 h-4 text-[#9146FF]" />
-              <span className="hidden sm:inline">قناتي في تويتش</span>
-            </a>
-            <a 
-              href="https://streamlabs.com/irozq8/tip" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Heart className="w-4 h-4 text-emerald-500" />
-              <span className="hidden sm:inline">دعم القناة</span>
-            </a>
-            <a 
-              href="https://discord.com/users/StigQ8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-              <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-            </a>
-          </div>
-        </div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md bg-black/80 backdrop-blur-xl border border-brand-gold/20 rounded-[40px] p-10 shadow-[0_0_50px_rgba(0,0,0,0.5)] z-10 relative overflow-hidden"
-        >
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent" />
+          <h1 className="text-4xl font-bold text-white mb-2">iRozQ8</h1>
+          <p className="text-zinc-400 mb-8 text-center">أدخل اسم القناة لربط الألعاب بالدردشة</p>
           
-          <div className="text-center mb-10">
-            <div className="w-24 h-24 bg-brand-gold/5 rounded-[32px] flex items-center justify-center mx-auto mb-6 border border-brand-gold/20 transform rotate-6 overflow-hidden shadow-2xl">
-              <img 
-                src="/roz.png" 
-                alt="Roz Logo" 
-                className="w-full h-full object-cover -rotate-6 scale-[1.4]"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
-                  (e.target as HTMLImageElement).parentElement!.innerHTML = '<div class="flex flex-col items-center text-brand-gold/50"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg></div>';
-                }}
+          <form onSubmit={handleConnect} className="w-full flex flex-col gap-4">
+            <div className="relative">
+              <input
+                type="text"
+                value={channelNameInput}
+                onChange={(e) => setChannelNameInput(e.target.value)}
+                placeholder="اسم القناة (مثال: irozq8)"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-brand-gold/50 focus:ring-1 focus:ring-brand-gold/50 transition-all text-center dir-ltr"
               />
+              <Twitch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
             </div>
-            <h1 className="text-4xl font-black text-white tracking-tight mb-3">منصة روز</h1>
-            <p className="text-brand-gold/60 text-lg">اربط قناتك للبدء باللعب مع المتابعين</p>
-          </div>
-
-          <form onSubmit={handleConnect} className="space-y-8">
-            <div>
-              <label htmlFor="channel" className="block text-sm font-bold text-brand-gold/50 mb-3 uppercase tracking-widest">
-                اسم قناة تويتش
-              </label>
-              <div className="relative" dir="ltr">
-                <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                  <span className="text-brand-gold/30 font-mono text-sm">twitch.tv/</span>
-                </div>
-                <input
-                  type="text"
-                  id="channel"
-                  value={channelNameInput}
-                  onChange={(e) => setChannelNameInput(e.target.value)}
-                  className="block w-full pl-32 pr-5 py-4 bg-white/5 border border-brand-gold/20 rounded-2xl text-white placeholder-brand-gold/20 focus:ring-2 focus:ring-brand-gold/50 focus:border-transparent transition-all outline-none text-lg font-medium"
-                  placeholder="username"
-                  required
-                />
-              </div>
-            </div>
-
             <button
               type="submit"
-              className="w-full bg-brand-gold hover:bg-brand-gold-light text-black font-black py-5 px-6 rounded-2xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-[0_10px_20px_rgba(212,175,55,0.2)] flex items-center justify-center gap-3 text-xl"
+              disabled={!channelNameInput.trim()}
+              className="w-full bg-brand-gold hover:bg-[#ffe066] disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 rounded-xl transition-all shadow-lg hover:shadow-brand-gold/20 flex items-center justify-center gap-2"
             >
-              اتصال ولعب
+              <Rocket className="w-5 h-5" />
+              اتصال
             </button>
           </form>
-        </motion.div>
-
-        {/* Credits */}
-        <div className="absolute bottom-6 left-0 right-0 text-center z-20 pointer-events-none">
-          <p className="text-yellow-500/40 text-sm font-mono flex items-center justify-center gap-2" dir="ltr">
-            <span>Done by:</span>
-            <span className="text-yellow-500/60 font-bold">iRozQ8</span>
-            <span>•</span>
-            <span className="text-yellow-500/60 font-bold">iSari9</span>
-            <span>•</span>
-            <span className="text-yellow-500/60 font-bold">iMythQ8</span>
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Full screen games
-  if (activeGame === 'trivia') {
-    return (
-      <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden bg-black" dir="rtl">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
-          <source src="/background.webm" type="video/webm" />
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
-        
-        {/* Top Bar */}
-        <div className="w-full max-w-6xl flex items-center justify-between mb-8 relative z-20">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://www.twitch.tv/irozq8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Twitch className="w-4 h-4 text-[#9146FF]" />
-              <span className="hidden sm:inline">قناتي في تويتش</span>
-            </a>
-            <a 
-              href="https://streamlabs.com/irozq8/tip" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Heart className="w-4 h-4 text-emerald-500" />
-              <span className="hidden sm:inline">دعم القناة</span>
-            </a>
-            <a 
-              href="https://discord.com/users/StigQ8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-              <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="relative z-10 h-full w-full">
-          <TriviaGame messages={messages} onLeave={leaveGame} channelName={activeChannel} isConnected={isConnected} error={error} />
-        </div>
-      </div>
-    );
-  }
-
-  if (activeGame === 'fruitwar') {
-    return (
-      <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden bg-black" dir="rtl">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
-          <source src="/background.webm" type="video/webm" />
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
-
-        {/* Top Bar */}
-        <div className="w-full max-w-6xl flex items-center justify-between mb-8 relative z-20">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://www.twitch.tv/irozq8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Twitch className="w-4 h-4 text-[#9146FF]" />
-              <span className="hidden sm:inline">قناتي في تويتش</span>
-            </a>
-            <a 
-              href="https://streamlabs.com/irozq8/tip" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Heart className="w-4 h-4 text-emerald-500" />
-              <span className="hidden sm:inline">دعم القناة</span>
-            </a>
-            <a 
-              href="https://discord.com/users/StigQ8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-              <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="relative z-10 h-full w-full">
-          <FruitWar messages={messages} onLeave={leaveGame} channelName={activeChannel} isConnected={isConnected} error={error} />
-        </div>
-      </div>
-    );
-  }
-
-  if (activeGame === 'chairs') {
-    return (
-      <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden bg-black" dir="rtl">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
-          <source src="/background.webm" type="video/webm" />
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
-
-        {/* Top Bar */}
-        <div className="w-full max-w-6xl flex items-center justify-between mb-8 relative z-20">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://www.twitch.tv/irozq8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Twitch className="w-4 h-4 text-[#9146FF]" />
-              <span className="hidden sm:inline">قناتي في تويتش</span>
-            </a>
-            <a 
-              href="https://streamlabs.com/irozq8/tip" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Heart className="w-4 h-4 text-emerald-500" />
-              <span className="hidden sm:inline">دعم القناة</span>
-            </a>
-            <a 
-              href="https://discord.com/users/StigQ8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-              <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="relative z-10 h-full w-full">
-          <ChairsGame messages={messages} onLeave={leaveGame} channelName={activeChannel} isConnected={isConnected} error={error} />
-        </div>
-      </div>
-    );
-  }
-
-  if (activeGame === 'roulette') {
-    return (
-      <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden bg-black" dir="rtl">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
-          <source src="/background.webm" type="video/webm" />
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
-
-        {/* Top Bar */}
-        <div className="w-full max-w-6xl flex items-center justify-between mb-8 relative z-20">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://www.twitch.tv/irozq8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Twitch className="w-4 h-4 text-[#9146FF]" />
-              <span className="hidden sm:inline">قناتي في تويتش</span>
-            </a>
-            <a 
-              href="https://streamlabs.com/irozq8/tip" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Heart className="w-4 h-4 text-emerald-500" />
-              <span className="hidden sm:inline">دعم القناة</span>
-            </a>
-            <a 
-              href="https://discord.com/users/StigQ8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-              <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="relative z-10 h-full w-full">
-          <RouletteGame messages={messages} onLeave={leaveGame} channelName={activeChannel} isConnected={isConnected} error={error} />
-        </div>
-      </div>
-    );
-  }
-
-  if (activeGame === 'wordchain') {
-    return (
-      <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden bg-black" dir="rtl">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
-          <source src="/background.webm" type="video/webm" />
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
-        
-        {/* Top Bar */}
-        <div className="w-full max-w-6xl flex items-center justify-between mb-8 relative z-20">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://www.twitch.tv/irozq8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Twitch className="w-4 h-4 text-[#9146FF]" />
-              <span className="hidden sm:inline">قناتي في تويتش</span>
-            </a>
-            <a 
-              href="https://streamlabs.com/irozq8/tip" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Heart className="w-4 h-4 text-emerald-500" />
-              <span className="hidden sm:inline">دعم القناة</span>
-            </a>
-            <a 
-              href="https://discord.com/users/StigQ8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-              <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="relative z-10 h-full w-full">
-          <WordChainGame messages={messages} onLeave={leaveGame} />
-        </div>
-      </div>
-    );
-  }
-
-  if (activeGame === 'chatinvaders') {
-    return (
-      <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden bg-black" dir="rtl">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
-          <source src="/background.webm" type="video/webm" />
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
-        
-        {/* Top Bar */}
-        <div className="w-full max-w-[95vw] mx-auto flex items-center justify-between mb-8 relative z-20">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://www.twitch.tv/irozq8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Twitch className="w-4 h-4 text-[#9146FF]" />
-              <span className="hidden sm:inline">قناتي في تويتش</span>
-            </a>
-            <a 
-              href="https://streamlabs.com/irozq8/tip" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Heart className="w-4 h-4 text-emerald-500" />
-              <span className="hidden sm:inline">دعم القناة</span>
-            </a>
-            <a 
-              href="https://discord.com/users/StigQ8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-              <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="relative z-10 h-full w-full max-w-[95vw] mx-auto">
-          <ChatInvadersGame messages={messages} onLeave={leaveGame} />
-        </div>
-      </div>
-    );
-  }
-
-  if (activeGame === 'liarsbar') {
-    return (
-      <div className="min-h-screen text-white font-arabic flex flex-col items-center relative overflow-hidden" dir="rtl">
-        <div className="relative z-10 h-full w-full">
-          <LiarsBarGame onLeave={leaveGame} />
-        </div>
-      </div>
-    );
-  }
-
-  if (activeGame === 'howmany') {
-    return (
-      <div className="min-h-screen text-white font-arabic flex flex-col items-center relative overflow-hidden" dir="rtl">
-        <div className="relative z-10 h-full w-full">
-          <HowManyGame onLeave={leaveGame} channelName={activeChannel} messages={messages} />
-        </div>
-      </div>
-    );
-  }
-
-  if (activeGame === 'teamfeud') {
-    return (
-      <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden bg-black" dir="rtl">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
-          <source src="/background.webm" type="video/webm" />
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
-
-        {/* Top Bar */}
-        <div className="w-full max-w-[95vw] mx-auto flex items-center justify-between mb-8 relative z-20">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://www.twitch.tv/irozq8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Twitch className="w-4 h-4 text-[#9146FF]" />
-              <span className="hidden sm:inline">قناتي في تويتش</span>
-            </a>
-            <a 
-              href="https://streamlabs.com/irozq8/tip" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Heart className="w-4 h-4 text-emerald-500" />
-              <span className="hidden sm:inline">دعم القناة</span>
-            </a>
-            <a 
-              href="https://discord.com/users/StigQ8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-              <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="relative z-10 w-full h-[85vh] flex gap-4 max-w-[95vw] mx-auto">
-          <div className="flex-1 bg-black/60 backdrop-blur-xl rounded-[40px] border border-brand-gold/20 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-            <TeamFeudGame onLeave={leaveGame} messages={messages} />
-          </div>
           
-          {/* Chat Sidebar */}
-          <div className="w-80 flex flex-col gap-4">
-            <div className="flex-1 min-h-0 bg-black/60 backdrop-blur-xl rounded-[40px] border border-brand-gold/20 overflow-hidden shadow-2xl">
-              <TwitchChat 
-                channelName={activeChannel} 
-                messages={messages}
-                isConnected={isConnected}
-                error={error}
-              />
-            </div>
+          <div className="mt-8 pt-8 border-t border-white/5 w-full flex justify-center gap-6">
+             <a href="https://www.twitch.tv/irozq8" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-[#9146FF] transition-colors"><Twitch className="w-6 h-6" /></a>
+             <a href="https://discord.com/users/StigQ8" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-[#5865F2] transition-colors"><MessageCircle className="w-6 h-6" /></a>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  if (activeGame === 'codenames') {
-    return (
-      <div className="min-h-screen text-white font-arabic flex flex-col items-center relative overflow-hidden" dir="rtl">
-        <div className="relative z-10 h-full w-full">
-          <CodeNamesGame onLeave={leaveGame} messages={messages} />
+        
+        <div className="absolute bottom-8 text-center z-10">
+          <p className="text-zinc-500 text-sm font-mono" dir="ltr">v2.0.0 • Developed by StigQ8</p>
         </div>
       </div>
     );
   }
 
-  if (activeGame === 'bombrelay') {
-    return (
-      <div className="min-h-screen text-white font-arabic flex flex-col items-center relative overflow-hidden" dir="rtl">
-        <div className="relative z-10 h-full w-full">
-          <BombRelayGame onLeave={leaveGame} messages={messages} />
-        </div>
-      </div>
-    );
-  }
+  // Active Game Rendering Logic
+  const renderActiveGame = () => {
+    const commonProps = {
+      channelName: activeChannel,
+      isConnected,
+      error,
+      messages,
+      onLeave: leaveGame
+    };
 
-  if (activeGame === 'priceisright') {
+    switch (activeGame) {
+      case 'trivia':
+         return <TriviaGame {...commonProps} />;
+      case 'fruitwar':
+         return <FruitWar {...commonProps} />;
+      case 'chairs':
+         return <ChairsGame {...commonProps} />;
+      case 'roulette':
+         return <RouletteGame {...commonProps} />;
+      case 'wordchain':
+         return <WordChainGame messages={messages} onLeave={leaveGame} />;
+      case 'chatinvaders':
+         return <ChatInvadersGame messages={messages} onLeave={leaveGame} />;
+      case 'liarsbar':
+         return <LiarsBarGame {...commonProps} />;
+      case 'howmany':
+         return <HowManyGame {...commonProps} />;
+      case 'teamfeud':
+        return <TeamFeudGame {...commonProps} />;
+      case 'codenames':
+        return <CodeNamesGame {...commonProps} />;
+      case 'bombrelay':
+        return <BombRelayGame messages={messages} onLeave={leaveGame} />;
+      case 'priceisright':
+        return <PriceIsRightGame {...commonProps} />;
+      default:
+        return null; 
+    }
+  };
+
+  // If a game is active, render the game screen
+  if (activeGame) {
+    const isCleanLayout = ['liarsbar', 'howmany', 'codenames', 'bombrelay'].includes(activeGame);
+
+    if (isCleanLayout) {
+         return (
+          <div className="min-h-screen text-white font-arabic flex flex-col items-center relative overflow-hidden" dir="rtl">
+             <div className="relative z-10 h-full w-full">
+               {renderActiveGame()}
+             </div>
+          </div>
+         );
+    }
+    
     return (
       <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden bg-black" dir="rtl">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
-          <source src="/background.webm" type="video/webm" />
-          <source src="/background.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-0" />
-        
-        {/* Top Bar */}
-        <div className="w-full max-w-[95vw] mx-auto flex items-center justify-between mb-8 relative z-20">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-              <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-            </div>
-            <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <a 
-              href="https://www.twitch.tv/irozq8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Twitch className="w-4 h-4 text-[#9146FF]" />
-              <span className="hidden sm:inline">قناتي في تويتش</span>
-            </a>
-            <a 
-              href="https://streamlabs.com/irozq8/tip" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <Heart className="w-4 h-4 text-emerald-500" />
-              <span className="hidden sm:inline">دعم القناة</span>
-            </a>
-            <a 
-              href="https://discord.com/users/StigQ8" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-            >
-              <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-              <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-            </a>
-          </div>
-        </div>
-
+        <Background />
+        <TopBar />
         <div className="relative z-10 w-full h-[85vh] flex gap-4 max-w-[95vw] mx-auto">
-          <div className="flex-1 bg-black/60 backdrop-blur-xl rounded-[40px] border border-brand-gold/20 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-            <PriceIsRightGame messages={messages} onLeave={leaveGame} />
-          </div>
-          
-          {/* Chat Sidebar */}
-          <div className="w-80 flex flex-col gap-4">
-            <div className="flex-1 min-h-0 bg-black/60 backdrop-blur-xl rounded-[40px] border border-brand-gold/20 overflow-hidden shadow-2xl">
-              <TwitchChat 
-                channelName={activeChannel} 
-                messages={messages}
-                isConnected={isConnected}
-                error={error}
-              />
-            </div>
-          </div>
+           <div className="flex-1 min-w-0 flex flex-col">
+              {renderActiveGame()}
+           </div>
+
+           {(activeGame === 'teamfeud' || activeGame === 'priceisright' || activeGame === 'trivia' || activeGame === 'fruitwar') && (
+              <div className="w-80 flex flex-col gap-4 hidden xl:flex">
+                <div className="flex-1 min-h-0 bg-black/60 backdrop-blur-xl rounded-[40px] border border-brand-gold/20 overflow-hidden shadow-2xl">
+                  <TwitchChat 
+                    channelName={activeChannel} 
+                    messages={messages}
+                    isConnected={isConnected}
+                    error={error}
+                  />
+                </div>
+              </div>
+           )}
         </div>
       </div>
     );
   }
 
+  // Lobby Screen (No active game)
   return (
-    <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden" dir="rtl">
-      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
-        <source src="/background.webm" type="video/webm" />
-        <source src="/background.mp4" type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 bg-black/40 z-0" />
-
-      {/* Top Bar */}
-      <div className="w-full max-w-[95vw] mx-auto flex items-center justify-between mb-8 relative z-20">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-brand-gold/10 rounded-2xl flex items-center justify-center border border-brand-gold/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-            <img src="/roz.png" alt="Logo" className="w-12 h-12 object-contain" />
-          </div>
-          <h1 className="text-3xl font-bold text-brand-gold tracking-wider glow-gold-text">iRozQ8</h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <a 
-            href="https://www.twitch.tv/irozq8" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#9146FF]/20 hover:bg-[#9146FF]/40 text-white px-4 py-2 rounded-xl border border-[#9146FF]/50 transition-all font-bold text-sm backdrop-blur-md"
-          >
-            <Twitch className="w-4 h-4 text-[#9146FF]" />
-            <span className="hidden sm:inline">قناتي في تويتش</span>
-          </a>
-          <a 
-            href="https://streamlabs.com/irozq8/tip" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-emerald-500/20 hover:bg-emerald-500/40 text-white px-4 py-2 rounded-xl border border-emerald-500/50 transition-all font-bold text-sm backdrop-blur-md"
-          >
-            <Heart className="w-4 h-4 text-emerald-500" />
-            <span className="hidden sm:inline">دعم القناة</span>
-          </a>
-          <a 
-            href="https://discord.com/users/StigQ8" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#5865F2]/20 hover:bg-[#5865F2]/40 text-white px-4 py-2 rounded-xl border border-[#5865F2]/50 transition-all font-bold text-sm backdrop-blur-md"
-          >
-            <MessageCircle className="w-4 h-4 text-[#5865F2]" />
-            <span className="hidden sm:inline">الدعم الفني (StigQ8)</span>
-          </a>
-        </div>
-      </div>
+    <div className="min-h-screen text-white p-8 font-arabic flex flex-col items-center relative overflow-hidden bg-black" dir="rtl">
+      <Background />
+      <TopBar />
 
       <div className="w-full max-w-[95vw] mx-auto flex gap-8 h-[85vh] relative z-10">
         
@@ -962,6 +470,7 @@ function MainApp() {
                         
                         <div className="w-full h-48 mb-6 rounded-2xl overflow-hidden shrink-0 border border-brand-gold/20 bg-black/40 flex items-center justify-center relative shadow-inner">
                           <div className="w-full h-full relative">
+                           {/* Use object-cover and error handling */}
                            <img 
                             src={game.image} 
                             alt={game.name} 
@@ -991,7 +500,6 @@ function MainApp() {
                             <button 
                               onClick={(e) => {
                                 e.stopPropagation();
-                                console.log('Tutorial clicked for:', game.id);
                                 setTutorialGame(game.id);
                               }}
                               className="w-8 h-8 rounded-full bg-brand-gold/10 flex items-center justify-center hover:bg-brand-gold hover:text-black transition-all text-brand-gold cursor-pointer"
