@@ -47,9 +47,14 @@ export const CodeNamesGame: React.FC<{ onLeave: () => void; messages: any[] }> =
   }, [messages, socket, roomId]);
 
   useEffect(() => {
-    const newSocket = io();
+    const newSocket = io({
+      path: '/api/socket.io',
+      addTrailingSlash: false,
+    });
     setSocket(newSocket);
-    newSocket.emit('join_team_game', { roomId, name: 'Streamer', gameType: 'codenames' });
+    newSocket.on('connect', () => {
+      newSocket.emit('join_team_game', { roomId, name: 'Streamer', gameType: 'codenames' });
+    });
     newSocket.on('team_game_state', (newState: GameState) => setState(newState));
     return () => { newSocket.disconnect(); };
   }, [roomId]);

@@ -27,7 +27,10 @@ export const TeamPlayer: React.FC = () => {
   const [answer, setAnswer] = useState('');
 
   useEffect(() => {
-    const newSocket = io();
+    const newSocket = io({
+      path: '/api/socket.io',
+      addTrailingSlash: false,
+    });
     setSocket(newSocket);
 
     newSocket.on('connect', () => {

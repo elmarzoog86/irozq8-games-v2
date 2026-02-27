@@ -79,7 +79,10 @@ export const TeamFeudGame: React.FC<{ onLeave: () => void; messages: any[] }> = 
   }, [messages, socket, roomId, state]);
 
   useEffect(() => {
-    const newSocket = io();
+    const newSocket = io({
+      path: '/api/socket.io',
+      addTrailingSlash: false,
+    });
     setSocket(newSocket);
 
     newSocket.on('connect', () => {

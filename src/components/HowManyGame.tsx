@@ -86,10 +86,15 @@ export const HowManyGame: React.FC<{ onLeave: () => void; channelName: string; m
   }, [messages, socket, roomId]);
 
   useEffect(() => {
-    const newSocket = io();
+    const newSocket = io({
+      path: '/api/socket.io',
+      addTrailingSlash: false,
+    });
     setSocket(newSocket);
 
-    newSocket.emit('join_howmany_lobby', { roomId, name: 'Streamer' });
+    newSocket.on('connect', () => {
+      newSocket.emit('join_howmany_lobby', { roomId, name: 'Streamer' });
+    });
 
     newSocket.on('howmany_state', (newState: GameState) => {
       setState(newState);

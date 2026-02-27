@@ -38,7 +38,10 @@ export const HowManyPlayer: React.FC = () => {
   const [bidInput, setBidInput] = useState(0);
 
   useEffect(() => {
-    const newSocket = io();
+    const newSocket = io({
+      path: '/api/socket.io',
+      addTrailingSlash: false,
+    });
     setSocket(newSocket);
 
     newSocket.on('howmany_state', (newState: GameState) => {
