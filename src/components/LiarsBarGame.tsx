@@ -94,12 +94,30 @@ export const LiarsBarGame: React.FC<{ onLeave: () => void }> = ({ onLeave }) => 
   }, [state]);
 
   useEffect(() => {
-    const newSocket = io();
-    setSocket(newSocket);
+    console.log('Connecting to socket server...');
+    const newSocket = io(window.location.origin, {
+      path: '/socket.io/',
+      transports: ['websocket', 'polling'],
+     reconnectionAttempts: 5,
+     timeout: 10000,
+    });
 
-    newSocket.emit('join_room', { roomId, name: 'Streamer', isStreamer: true, character: selectedChar });
+    newSocket.on('connect', () => {
+      console.log('Socket connected:', newSocket.id);
+      setSocket(newSocket);
+      newSocket.emit('join_room', { roomId, name: 'Streamer', isStreamer: true, character: selectedChar });
+    });
+
+    newSocket.on('connect_error', (err) => {
+      console.error('Socket connection error:', err);
+    });
+
+    newSocket.on("error", (err: string) => { // Handle 'error' event from server
+      console.error("Server error:", err);
+    });
 
     newSocket.on('state_update', (newState: GameState) => {
+      console.log('Received state update:', newState);
       setState(newState);
     });
 
