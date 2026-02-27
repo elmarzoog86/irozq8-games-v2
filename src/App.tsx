@@ -37,21 +37,6 @@ const GAMES = [
     name: 'سين جيم',
     description: 'اختبر معلوماتك العامة في مسابقة ثقافية سريعة. أجب على الأسئلة في الدردشة واجمع النقاط لتتصدر لوحة الصدارة.',
     tutorial: 'اكتب رقم الإجابة الصحيحة في الدردشة (1، 2، 3، أو 4). كلما أجبت أسرع، حصلت على نقاط أكثر!',
-    fullTutorial: {
-      streamer: [
-        'ابدأ اللعبة من القائمة الرئيسية.',
-        'ستظهر الأسئلة تلقائياً على الشاشة.',
-        'يمكنك التحكم في إظهار الإجابة الصحيحة أو الانتقال للسؤال التالي.',
-        'شجع المشاهدين على المشاركة عبر الدردشة.',
-        'في نهاية اللعبة، ستظهر لوحة الصدارة للفائزين.'
-      ],
-      players: [
-        'تابع البث لقراءة السؤال والخيارات.',
-        'اكتب رقم الإجابة الصحيحة (1, 2, 3, 4) في الدردشة.',
-        'السرعة مهمة! كلما أجبت أسرع، حصلت على نقاط أكثر.',
-        'حاول جمع أكبر عدد من النقاط لتتصدر القائمة.'
-      ]
-    },
     image: '/trivia.png',
     status: 'active',
     type: 'puzzles',
@@ -62,25 +47,6 @@ const GAMES = [
     name: 'تحدي الفرق',
     description: 'انقسموا إلى فريقين وحاولوا تخمين الإجابات الأكثر شيوعاً بين الناس. هل تستطيع أنت وفريقك السيطرة على اللوحة؟',
     tutorial: 'اكتب إجابتك في الدردشة. إذا كانت إجابتك من ضمن الإجابات الأكثر شيوعاً، ستحصل على نقاط لفريقك.',
-    fullTutorial: {
-      streamer: [
-        'أنت المضيف وتدير العرض.',
-        'أنشئ الفرق (الذهب والأسود) واختر قادة الفرق.',
-        'اقرأ السؤال بصوت واضح.',
-        'استقبل إجابات القادة من خلال الرابط المخصص.',
-        'اضغط على زر "عرض الإجابة" إذا أجاب أحد الفرق بشكل صحيح.',
-        'إذا كانت الإجابة خاطئة، يحصل الفريق على X (سترايك).',
-        '3 سترايكات تعني فرصة سرقة للفريق الآخر.',
-        'الفريق الفائز هو من يصل للهدف (مثلاً 300 نقطة) أولاً.'
-      ],
-      players: [
-        'انضم للفريق الذي تفضله (الذهبي أو الأسود) عبر الرابط.',
-        'عندما يطرح السؤال، انتظر دور قائد فريقك.',
-        'إذا تم اختيارك كقائد، اكتب إجابتك بسرعة في واجهة الويب.',
-        'حاول تخمين الإجابات الأكثر شيوعاً بين الناس.',
-        'ساعد فريقك في التفكير حتى لو لم يكن الدور دورك.'
-      ]
-    },
     image: '/teamfeud.png',
     status: 'active',
     type: 'puzzles',
@@ -91,21 +57,6 @@ const GAMES = [
     name: 'خمن السعر',
     description: 'استعرض مهاراتك في التسوق! خمن السعر الصحيح للمنتجات المعروضة. الفائز هو من يقترب من السعر الحقيقي دون تجاوزه.',
     tutorial: 'اكتب السعر الذي تتوقعه في الدردشة. يجب أن يكون السعر قريباً من السعر الحقيقي دون أن يتجاوزه.',
-    fullTutorial: {
-      streamer: [
-        'ابدأ اللعبة من القائمة الرئيسية.',
-        'اقرأ وصف المنتج أو أظهر صورته.',
-        'يمكنك التحكم في الوقت المخصص للتخمين.',
-        'في نهاية كل جولة، اضغط "كشف السعر" لعرض الفائز.',
-        'الفائز هو الأقرب للسعر الحقيقي دون أن يتجاوزه.'
-      ],
-      players: [
-        'انظر إلى المنتج الذي يعرضه الستريمر.',
-        'اكتب السعر الذي تتوقعه في الدردشة (بالدولار أو العملة المتفق عليها).',
-        'يجب أن يكون السعر قريباً من السعر الحقيقي دون أن يتجاوزه (كما في برنامج التلفزيون).',
-        'الأقرب للسعر الصحيح يربح الجولة.'
-      ]
-    },
     image: '/priceisright.png',
     status: 'active',
     type: 'puzzles',
@@ -116,21 +67,6 @@ const GAMES = [
     name: 'حرب الفواكه',
     description: 'اختر فاكهتك المفضلة واستعد للمعركة! لعبة حماسية تعتمد على تصويت الجمهور أو الحظ لتحديد الناجي الأخير.',
     tutorial: 'اكتب اسم الفاكهة التي تريد دعمها في الدردشة. الفاكهة التي تحصل على أقل عدد من الأصوات أو يتم اختيارها في الروليت تخرج من اللعبة.',
-    fullTutorial: {
-      streamer: [
-        'ابدأ الجولة من القائمة الرئيسية.',
-        'اختر طريقة الإقصاء: "الأقل تصويتاً" أو "روليت".',
-        'شجع المشاهدين على التصويت للفاكهة المفضلة لديهم.',
-        'في نهاية الوقت، يتم استبعاد الفاكهة المنافسة.',
-        'آخر فاكهة متبقية هي الفائزة في الحرب.'
-      ],
-      players: [
-        'اختر الفاكهة التي تريد دعمها.',
-        'اكتب اسم الفاكهة في الدردشة (باللغة العربية، مثل: موز، تفاح، برتقال).',
-        'احشد أصدقاءك للتصويت لنفس الفاكهة.',
-        'تأكد من أن فاكهتك ليست الأقل تصويتاً!'
-      ]
-    },
     image: '/fruitwar.png',
     status: 'active',
     type: 'action',
@@ -141,28 +77,6 @@ const GAMES = [
     name: 'حانة الكاذبين',
     description: 'لعبة الخداع النفسي والمخاطرة العالية. اكذب بذكاء، واكشف كذب الآخرين، أو واجه رصاصة الروليت الروسية!',
     tutorial: 'اكتب رقم الكرت الذي تريد لعبه. يمكنك الكذب بشأن الكرت، لكن إذا كشفك أحدهم ستضطر لتجربة حظك مع الروليت الروسية.',
-    fullTutorial: {
-      streamer: [
-        'أنت المضيف وتعتبر اللاعب الأول في اللعبة.',
-        'قم بإنشاء الغرفة وانسخ الرابط لمشاركته مع صديق (اللاعب الثاني).',
-        'اختر شخصيتك المفضلة من القائمة.',
-        'عند بدء اللعبة، ستحصل على 5 بطاقات.',
-        'في دورك، اختر 1-3 بطاقات لتلعبها مقلوبة.',
-        'يجب أن تدعي أن البطاقات هي من النوع المطلوب (مثلاً: ملوك).',
-        'يمكنك الكذب ولعب بطاقات مختلفة، لكن احذر!',
-        'إذا شككت في اللاعب الآخر، اضغط "كاذب!" لكشف بطاقاته.',
-        'الخاسر في التحدي سيضطر لسحب الزناد في الروليت الروسية.',
-        'الناجي الأخير يفوز باللعبة.'
-      ],
-      players: [
-        'استخدم الرابط الذي أرسله الستريمر للدخول للغرفة.',
-        'انتظر حتى يبدأ الستريمر اللعبة.',
-        'ستحصل على 5 بطاقات وتشارك في اللعب بالأدوار.',
-        'حاول خداع الستريمر أو كشف كذبه.',
-        'اذا تم كشف كذبك، ستواجه الروليت الروسية.',
-        'حظاً موفقاً في البقاء على قيد الحياة!'
-      ]
-    },
     image: '/liarsbar.png',
     status: 'active',
     type: 'strategy',
@@ -174,22 +88,6 @@ const GAMES = [
     name: 'كم تقدر تسمي؟',
     description: 'تحدي الذاكرة والسرعة. كم عدد الأشياء التي يمكنك تسميتها في فئة معينة قبل أن يسبقك الآخرون؟',
     tutorial: 'اكتب أكبر عدد ممكن من الكلمات التي تنتمي للفئة المختارة في الدردشة. كل كلمة صحيحة تمنحك نقطة.',
-    fullTutorial: {
-      streamer: [
-        'ابدأ اللعبة واختر فئة (مثل: "مدن عربية").',
-        'قم بإنشاء الغرفة وانسخ الرابط لمشاركته.',
-        'يمكنك التحكم في الوقت المخصص للكتابة.',
-        'في نهاية كل جولة، راجع إجابات اللاعبين وامنح النقاط.',
-        'الفائز هو من يجمع أكبر عدد من النقاط الصحيحة.'
-      ],
-      players: [
-        'ادخل رابط الغرفة الذي أرسله الستريمر.',
-        'انظر إلى الفئة المختارة.',
-        'عند بدء اللعبة، اكتب أكبر عدد من الكلمات التي تنتمي للفئة.',
-        'يجب أن تكون الكلمات صحيحة وغير مكررة.',
-        'انتظر قرار الستريمر بشأن صحة إجاباتك.'
-      ]
-    },
     image: '/howmany.png',
     status: 'active',
     type: 'puzzles',
@@ -285,7 +183,6 @@ function MainApp() {
   const [tutorialGame, setTutorialGame] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'coming_soon' | 'testing'>('all');
   const [typeFilter, setTypeFilter] = useState<'all' | 'action' | 'puzzles' | 'strategy'>('all');
-  const [tutorialTab, setTutorialTab] = useState<'streamer' | 'players'>('streamer'); // Add this line
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -1147,7 +1044,6 @@ function MainApp() {
             >
               {(() => {
                 const game = GAMES.find(g => g.id === tutorialGame)!;
-                const hasDetailedTutorial = game.fullTutorial;
                 
                 return (
                   <div className="flex flex-col max-h-[85vh]">
@@ -1179,58 +1075,16 @@ function MainApp() {
                       </button>
                     </div>
 
-                    {/* Tabs if detailed tutorial exists */}
-                    {hasDetailedTutorial && (
-                      <div className="flex border-b border-white/5">
-                        <button 
-                          onClick={() => setTutorialTab('streamer')}
-                          className={`flex-1 py-4 text-sm font-bold uppercase tracking-wider transition-colors ${
-                            tutorialTab === 'streamer' 
-                              ? 'text-brand-gold bg-brand-gold/5 border-b-2 border-brand-gold' 
-                              : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'
-                          }`}
-                        >
-                          للستريمر (المضيف)
-                        </button>
-                        <button 
-                          onClick={() => setTutorialTab('players')}
-                          className={`flex-1 py-4 text-sm font-bold uppercase tracking-wider transition-colors ${
-                            tutorialTab === 'players' 
-                              ? 'text-brand-gold bg-brand-gold/5 border-b-2 border-brand-gold' 
-                              : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'
-                          }`}
-                        >
-                          للاعبين (الضيوف)
-                        </button>
-                      </div>
-                    )}
-
                     {/* Content */}
                     <div className="p-8 overflow-y-auto custom-scrollbar">
-                      {hasDetailedTutorial ? (
-                       <ul className="space-y-4">
-                          {(tutorialTab === 'streamer' ? game.fullTutorial!.streamer : game.fullTutorial!.players).map((step: string, i: number) => (
-                            <li key={i} className="flex gap-4 group">
-                              <span className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-gold/10 text-brand-gold font-mono font-bold flex items-center justify-center border border-brand-gold/20 group-hover:bg-brand-gold group-hover:text-black transition-colors">
-                                {i + 1}
-                              </span>
-                              <p className="text-zinc-300 leading-relaxed pt-1 text-right">{step}</p>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <div className="space-y-6 text-center py-8">
-                          <div className="w-16 h-16 rounded-full bg-brand-gold/10 text-brand-gold flex items-center justify-center mx-auto mb-4">
-                            <HelpCircle className="w-8 h-8" />
-                          </div>
-                          <p className="text-lg text-zinc-300 leading-relaxed max-w-md mx-auto">
-                            {game.tutorial}
-                          </p>
-                          <p className="text-sm text-zinc-500 italic mt-8">
-                            * دليل تفصيلي لهذه اللعبة قادم قريباً.
-                          </p>
+                      <div className="space-y-6 text-center py-8">
+                        <div className="w-16 h-16 rounded-full bg-brand-gold/10 text-brand-gold flex items-center justify-center mx-auto mb-4">
+                          <HelpCircle className="w-8 h-8" />
                         </div>
-                      )}
+                        <p className="text-lg text-zinc-300 leading-relaxed max-w-md mx-auto">
+                          {game.tutorial}
+                        </p>
+                      </div>
                     </div>
                     
                     {/* Footer */}
