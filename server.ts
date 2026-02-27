@@ -1,3 +1,4 @@
+
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -933,7 +934,7 @@ app.get("/auth/callback", (req, res) => {
             window.location.href = '/';
           }
         </script>
-        <p>Authentication successful. This window will close automatically.</p>
+        <p>تم تسجيل الدخول بنجاح. سيتم إغلاق هذه النافذة تلقائياً.</p>
       </body>
     </html>
   `);
@@ -957,6 +958,7 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     app.use(express.static("dist"));
+    // SPA fallback for production: serve index.html for any unknown routes
     app.get("*", (req, res) => {
       res.sendFile("dist/index.html", { root: "." });
     });
@@ -969,4 +971,6 @@ async function startServer() {
 
 export default app;
 
-startServer();
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+  startServer();
+}
