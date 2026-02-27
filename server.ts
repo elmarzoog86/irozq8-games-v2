@@ -1,4 +1,3 @@
-
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -43,6 +42,33 @@ interface LiarsGameState {
 }
 
 const rooms = new Map<string, LiarsGameState>();
+
+// Constants for card deck
+const CARDS = ["Kings", "Queens", "Aces", "Joker"];
+const DECK = [
+    ...Array(6).fill("Kings"),
+    ...Array(6).fill("Queens"),
+    ...Array(6).fill("Aces"),
+    ...Array(2).fill("Joker")
+];
+
+function shuffleDeck() {
+    return [...DECK].sort(() => Math.random() - 0.5);
+}
+
+function distributeCards(playersCount: number) {
+    const deck = shuffleDeck();
+    const hands: string[][] = Array(playersCount).fill([]).map(() => []);
+    
+    deck.forEach((card, i) => {
+        if (i < playersCount * 5) {
+            hands[i % playersCount].push(card);
+        }
+    });
+
+    return hands;
+}
+
 
 // How Many Can You Name Game State
 interface HowManyGameState {
@@ -627,246 +653,100 @@ io.on("connection", (socket) => {
 
   socket.on("start_game", (roomId) => {
     const state = rooms.get(roomId);
-    if (!state) return;
-
-    state.status = 'playing';
-    state.tableCards = [];
-    state.lastPlay = null;
-    state.currentTurn = 0;
-    state.targetCard = ["Kings", "Queens", "Aces"][Math.floor(Math.random() * 3)];
-
-    // Deal cards
-    const deck = ["Kings", "Queens", "Aces", "Joker"];
-    state.players.forEach(p => {
-      p.cards = Array(5).fill(0).map(() => deck[Math.floor(Math.random() * deck.length)]);
-      p.shotsTaken = 0;
-      p.lives = 6;
-    });
-
-    io.to(roomId).emit("state_update", state);
-  });
-
-  socket.on("play_cards", ({ roomId, cards }) => {
-    const state = rooms.get(roomId);
-    if (!state || state.status !== 'playing') return;
-
-    const player = state.players[state.currentTurn];
-    if (player.id !== socket.id) return;
-
-    // Remove cards from player hand
-    cards.forEach((c: string) => {
-      const idx = player.cards.indexOf(c);
-      if (idx > -1) player.cards.splice(idx, 1);
-    });
-
-    state.lastPlay = {
-      playerId: player.id,
-      count: cards.length,
-      actualCards: cards
-    };
-
-    state.tableCards.push(...cards);
-    
-    // Check if player played their last cards and only 2 players left
-    const activePlayers = state.players.filter(p => p.lives > 0);
-    if (player.cards.length === 0 && activePlayers.length === 2) {
-      // Force call liar
-      const otherPlayer = activePlayers.find(p => p.id !== player.id);
-      if (otherPlayer) {
-        // Trigger liar call logic
-        const roomIdLocal = roomId; // Capture for timeout
-        state.status = 'roulette';
-        const isLying = state.lastPlay.actualCards.some(c => c !== state.targetCard && c !== "Joker");
-        const loser = isLying ? player : otherPlayer;
-        state.loserId = loser.id;
-        
-        io.to(roomId).emit("liar_result", { 
-          isLying, 
-          loserName: loser.name, 
-          actualCards: state.lastPlay.actualCards,
-          forced: true
+    if (state && state.players.length >= 2) {
+        state.status = 'playing';
+        state.currentTurn = 0;
+        const hands = distributeCards(state.players.length);
+        state.players.forEach((player, i) => {
+            player.cards = hands[i];
         });
-        io.to(roomId).emit("state_update", state);
-
-        // Automatically pull trigger after suspense delay (copied from call_liar)
-        setTimeout(() => {
-          const currentState = rooms.get(roomIdLocal);
-          if (!currentState || currentState.status !== 'roulette' || !currentState.loserId) return;
-
-          const currentLoser = currentState.players.find(p => p.id === currentState.loserId);
-          const dead = Math.random() < (1 / (6 - (currentLoser?.shotsTaken || 0)));
-          
-          if (dead) {
-            if (currentLoser) {
-              currentLoser.lives = 0;
-              currentLoser.shotsTaken = 6;
-            }
-            io.to(roomIdLocal).emit("shot_fired", { dead: true, name: currentLoser?.name });
-            
-            setTimeout(() => {
-              const survivors = currentState.players.filter(p => p.lives > 0);
-              if (survivors.length <= 1) {
-                currentState.status = 'game_over';
-                currentState.winner = survivors[0]?.name || "No one";
-              } else {
-                currentState.status = 'playing';
-                const deck = ["Kings", "Queens", "Aces", "Joker"];
-                currentState.players.forEach(p => {
-                  if (p.lives > 0) {
-                    p.cards = Array(5).fill(0).map(() => deck[Math.floor(Math.random() * deck.length)]);
-                    p.shotsTaken = 0;
-                  }
-                });
-                currentState.tableCards = [];
-                currentState.lastPlay = null;
-                // The loser of the liar call skips their turn in the next round
-                const loserIdx = currentState.players.findIndex(p => p.id === currentState.loserId);
-                currentState.currentTurn = (loserIdx + 1) % currentState.players.length;
-                
-                while (currentState.players[currentState.currentTurn].lives <= 0) {
-                  currentState.currentTurn = (currentState.currentTurn + 1) % currentState.players.length;
-                }
-              }
-              io.to(roomIdLocal).emit("state_update", currentState);
-            }, 2000);
-          } else {
-            if (currentLoser) currentLoser.shotsTaken++;
-            io.to(roomIdLocal).emit("shot_fired", { dead: false, name: currentLoser?.name });
-            setTimeout(() => {
-              currentState.status = 'playing';
-              if (currentState.players.some(p => p.lives > 0 && p.cards.length === 0)) {
-                const deck = ["Kings", "Queens", "Aces", "Joker"];
-                currentState.players.forEach(p => {
-                  if (p.lives > 0) {
-                    p.cards = Array(5).fill(0).map(() => deck[Math.floor(Math.random() * deck.length)]);
-                    p.shotsTaken = 0;
-                  }
-                });
-                currentState.tableCards = [];
-                currentState.lastPlay = null;
-              }
-              
-              // The loser of the liar call skips their turn in the next round
-              const loserIdx = currentState.players.findIndex(p => p.id === currentState.loserId);
-              currentState.currentTurn = (loserIdx + 1) % currentState.players.length;
-              
-              while (currentState.players[currentState.currentTurn].lives <= 0) {
-                currentState.currentTurn = (currentState.currentTurn + 1) % currentState.players.length;
-              }
-              io.to(roomIdLocal).emit("state_update", currentState);
-            }, 2000);
-          }
-          currentState.loserId = null;
-        }, 4000); // 4 seconds of suspense
-
-        return;
-      }
+        io.to(roomId).emit('state_update', state);
     }
+});
 
-    state.currentTurn = (state.currentTurn + 1) % state.players.length;
-    // Skip dead players or players with no cards (unless everyone has no cards)
-    let attempts = 0;
-    while (attempts < state.players.length && (state.players[state.currentTurn].lives <= 0 || (state.players[state.currentTurn].cards.length === 0 && state.players.some(p => p.lives > 0 && p.cards.length > 0)))) {
-      state.currentTurn = (state.currentTurn + 1) % state.players.length;
-      attempts++;
-    }
-
-    io.to(roomId).emit("state_update", state);
-    io.to(roomId).emit("cards_played", { name: player.name, count: cards.length });
-  });
-
-  socket.on("call_liar", (roomId) => {
+socket.on('play_cards', ({ roomId, cards }) => {
     const state = rooms.get(roomId);
-    if (!state || !state.lastPlay || state.status !== 'playing') return;
-
-    const lastPlayer = state.players.find(p => p.id === state.lastPlay!.playerId);
-    const caller = state.players.find(p => p.id === socket.id);
-    if (!lastPlayer || !caller) return;
-
-    const isLying = state.lastPlay.actualCards.some(c => c !== state.targetCard && c !== "Joker");
-    const loser = isLying ? lastPlayer : caller;
-
-    state.status = 'roulette';
-    state.loserId = loser.id;
-    
-    io.to(roomId).emit("state_update", state);
-    io.to(roomId).emit("liar_result", { 
-      isLying, 
-      loserName: loser.name, 
-      actualCards: state.lastPlay.actualCards 
-    });
-
-    // Automatically pull trigger after suspense delay
-    setTimeout(() => {
-      const currentState = rooms.get(roomId);
-      if (!currentState || currentState.status !== 'roulette' || !currentState.loserId) return;
-
-      const currentLoser = currentState.players.find(p => p.id === currentState.loserId);
-      const dead = Math.random() < (1 / (6 - (currentLoser?.shotsTaken || 0)));
-      
-      if (dead) {
-        if (currentLoser) {
-          currentLoser.lives = 0;
-          currentLoser.shotsTaken = 6;
-        }
-        io.to(roomId).emit("shot_fired", { dead: true, name: currentLoser?.name });
-        
-        setTimeout(() => {
-          const survivors = currentState.players.filter(p => p.lives > 0);
-          if (survivors.length <= 1) {
-            currentState.status = 'game_over';
-            currentState.winner = survivors[0]?.name || "No one";
-          } else {
-            currentState.status = 'playing';
-            const deck = ["Kings", "Queens", "Aces", "Joker"];
-            currentState.players.forEach(p => {
-              if (p.lives > 0) {
-                p.cards = Array(5).fill(0).map(() => deck[Math.floor(Math.random() * deck.length)]);
-                p.shotsTaken = 0;
-              }
+    if (state && state.status === 'playing') {
+        const player = state.players.find(p => p.id === socket.id);
+        if (player && state.players[state.currentTurn].id === socket.id) {
+            // Remove cards from player hand
+            cards.forEach((card: string) => {
+                const idx = player.cards.indexOf(card);
+                if (idx > -1) player.cards.splice(idx, 1);
             });
-            currentState.tableCards = [];
-            currentState.lastPlay = null;
-            // The loser of the liar call skips their turn in the next round
-            const loserIdx = currentState.players.findIndex(p => p.id === currentState.loserId);
-            currentState.currentTurn = (loserIdx + 1) % currentState.players.length;
             
-            while (currentState.players[currentState.currentTurn].lives <= 0) {
-              currentState.currentTurn = (currentState.currentTurn + 1) % currentState.players.length;
-            }
-          }
-          io.to(roomId).emit("state_update", currentState);
-        }, 2000);
-      } else {
-        if (currentLoser) currentLoser.shotsTaken++;
-        io.to(roomId).emit("shot_fired", { dead: false, name: currentLoser?.name });
-        setTimeout(() => {
-          currentState.status = 'playing';
-          if (currentState.players.some(p => p.lives > 0 && p.cards.length === 0)) {
-            const deck = ["Kings", "Queens", "Aces", "Joker"];
-            currentState.players.forEach(p => {
-              if (p.lives > 0) {
-                p.cards = Array(5).fill(0).map(() => deck[Math.floor(Math.random() * deck.length)]);
-                p.shotsTaken = 0;
-              }
+            state.tableCards.push(...cards);
+            state.lastPlay = {
+                playerId: player.id,
+                count: cards.length,
+                actualCards: cards
+            };
+            
+            state.currentTurn = (state.currentTurn + 1) % state.players.length;
+            io.to(roomId).emit('state_update', state);
+            io.to(roomId).emit('cards_played', { name: player.name, count: cards.length });
+        }
+    }
+});
+
+socket.on('call_liar', (roomId) => {
+    const state = rooms.get(roomId);
+    if (state && state.lastPlay) {
+        const lastPlayer = state.players.find(p => p.id === state.lastPlay!.playerId);
+        const challenger = state.players.find(p => p.id === socket.id);
+        
+        if (lastPlayer && challenger) {
+            const isLying = state.lastPlay.actualCards.some(card => card !== state.targetCard && card !== 'Joker');
+            
+            const loserId = isLying ? lastPlayer.id : challenger.id;
+            state.loserId = loserId;
+            state.status = 'roulette';
+            
+            io.to(roomId).emit('state_update', state);
+            io.to(roomId).emit('liar_revealed', { 
+                isLying, 
+                actualCards: state.lastPlay.actualCards,
+                loserName: isLying ? lastPlayer.name : challenger.name,
+                forced: false
             });
-            currentState.tableCards = [];
-            currentState.lastPlay = null;
-          }
-          
-          // The loser of the liar call skips their turn in the next round
-          const loserIdx = currentState.players.findIndex(p => p.id === currentState.loserId);
-          currentState.currentTurn = (loserIdx + 1) % currentState.players.length;
-          
-          while (currentState.players[currentState.currentTurn].lives <= 0) {
-            currentState.currentTurn = (currentState.currentTurn + 1) % currentState.players.length;
-          }
-          io.to(roomId).emit("state_update", currentState);
-        }, 2000);
-      }
-      currentState.loserId = null;
-    }, 4000); // 4 seconds of suspense
-  });
+
+            // Simulate Roulette
+            setTimeout(() => {
+                const shots = Math.floor(Math.random() * 6);
+                const isDead = shots === 0; // 1/6 chance
+                
+                io.to(roomId).emit('shot_fired', { dead: isDead, name: state.players.find(p => p.id === loserId)?.name });
+                
+                if (isDead) {
+                    const loser = state.players.find(p => p.id === loserId);
+                    if (loser) {
+                        state.players = state.players.filter(p => p.id !== loserId);
+                        if (state.players.length === 1) {
+                            state.winner = state.players[0].name;
+                            state.status = 'game_over';
+                        } else {
+                            state.status = 'playing';
+                            state.currentTurn = 0;
+                            state.lastPlay = null;
+                            state.tableCards = [];
+                            // Redistribute cards
+                            const hands = distributeCards(state.players.length);
+                            state.players.forEach((p, i) => p.cards = hands[i]);
+                        }
+                    }
+                } else {
+                    state.status = 'playing';
+                    state.lastPlay = null; 
+                    state.tableCards = [];
+                    // Redistribute cards
+                    const hands = distributeCards(state.players.length);
+                    state.players.forEach((p, i) => p.cards = hands[i]);
+                }
+                io.to(roomId).emit('state_update', state);
+            }, 5000);
+        }
+    }
+});
 
   socket.on("reset_to_lobby", (roomId) => {
     const state = rooms.get(roomId);
